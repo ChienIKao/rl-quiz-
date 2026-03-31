@@ -48,6 +48,10 @@ def estimate_html_height(text: str, font_size: int = 18) -> int:
 
 
 def render_math_block(text: str, *, font_size: int = 18) -> None:
+    is_dark = st.get_option("theme.base") == "dark"
+    text_color = "#f9fafb" if is_dark else "#111827"
+    code_bg = "#374151" if is_dark else "#f3f4f6"
+
     formatted = format_math_text(text)
     html_body = escape(formatted)
     # Convert newlines to <br> but protect $$ ... $$ display math blocks,
@@ -78,19 +82,16 @@ def render_math_block(text: str, *, font_size: int = 18) -> None:
       html, body {{ margin: 0; padding: 0; overflow: hidden; }}
       body {{
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: #111827;
+        color: {text_color};
         background: transparent;
         font-size: {font_size}px;
         line-height: 1.5;
         word-break: break-word;
       }}
-      @media (prefers-color-scheme: dark) {{
-        body {{ color: #f9fafb; }}
-        code {{ background: #374151; color: #f9fafb; }}
-      }}
       strong {{ font-weight: 700; }}
       code {{
-        background: #f3f4f6;
+        background: {code_bg};
+        color: {text_color};
         border-radius: 6px;
         padding: 0.1rem 0.35rem;
       }}
