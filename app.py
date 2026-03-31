@@ -9,7 +9,6 @@ import streamlit.components.v1 as components
 
 
 PAGE_TITLE = "強化學習測驗"
-QUESTION_COUNT = 50
 POINTS_PER_QUESTION = 2
 QUESTION_BANK_PATH = Path(__file__).resolve().parent / "data" / "questions.json"
 
@@ -28,15 +27,27 @@ def format_math_text(text: str) -> str:
     return formatted.strip()
 
 
-def estimate_html_height(text: str, base: int = 30) -> int:
-    lines = max(text.count("\n") + 1, 1)
-    blocks = text.count("$$") // 2
-    wrapped_lines = max(len(text) // 32, 0)
-    length_bonus = min(len(text) // 14, 260)
-    return min(base + lines * 28 + wrapped_lines * 16 + blocks * 42 + length_bonus, 900)
+def estimate_html_height(text: str, font_size: int = 18) -> int:
+    """Estimate iframe height accounting for CJK vs ASCII character widths."""
+    line_h = round(font_size * 1.7)   # line-height:1.5 + generous buffer
+    usable_px = 550                    # conservative container width
+
+    total_lines = 0.0
+    for segment in text.split("\n"):
+        stripped = segment.strip()
+        if not stripped:
+            total_lines += 0.4         # blank line counts as small gap
+            continue
+        cjk = sum(1 for c in stripped if "\u2e80" <= c <= "\u9fff" or "\uf900" <= c <= "\ufaff")
+        others = len(stripped) - cjk
+        width_px = cjk * font_size + others * (font_size * 0.56)
+        total_lines += max(1, (int(width_px) + usable_px - 1) // usable_px)
+
+    display_blocks = text.count("$$") // 2
+    return min(12 + int(total_lines * line_h) + display_blocks * font_size * 3, 1200)
 
 
-def render_math_block(text: str, *, height: int | None = None, font_size: int = 18) -> None:
+def render_math_block(text: str, *, font_size: int = 18) -> None:
     formatted = format_math_text(text)
     html_body = escape(formatted)
     # Convert newlines to <br> but protect $$ ... $$ display math blocks,
@@ -46,57 +57,49 @@ def render_math_block(text: str, *, height: int | None = None, font_size: int = 
     for i in range(0, len(parts), 2):
         parts[i] = re.sub(r"\n{2,}", "<br>", parts[i]).replace("\n", "<br>")
     html_body = "".join(parts)
-    render_height = height or estimate_html_height(formatted)
+    render_height = estimate_html_height(formatted, font_size)
 
-    html = f"""
-    <html>
-      <head>
-        <meta charset="utf-8" />
-        <script>
-          window.MathJax = {{
-            tex: {{
-              inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
-              displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']]
-            }},
-            svg: {{ fontCache: 'global' }}
-          }};
-        </script>
-        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-        <style>
-          body {{
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            color: #111827;
-            background: transparent;
-            font-size: {font_size}px;
-            line-height: 1.35;
-            word-break: break-word;
-          }}
-          p {{
-            margin: 0 0 0.8rem 0;
-          }}
-          strong {{
-            font-weight: 700;
-          }}
-          code {{
-            background: #f3f4f6;
-            border-radius: 6px;
-            padding: 0.1rem 0.35rem;
-          }}
-          ul, ol {{
-            margin: 0.4rem 0 0.8rem 1.2rem;
-            padding: 0;
-          }}
-          li {{
-            margin: 0.25rem 0;
-          }}
-        </style>
-      </head>
-      <body>
-        <div>{html_body}</div>
-      </body>
-    </html>
-    """
+    html = f"""<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      window.MathJax = {{
+        tex: {{
+          inlineMath: [['$','$'],['\\\\(','\\\\)']],
+          displayMath: [['$$','$$'],['\\\\[','\\\\]']]
+        }},
+        svg: {{ fontCache: 'global' }}
+      }};
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <style>
+      * {{ box-sizing: border-box; }}
+      html, body {{ margin: 0; padding: 0; overflow: hidden; }}
+      body {{
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #111827;
+        background: transparent;
+        font-size: {font_size}px;
+        line-height: 1.5;
+        word-break: break-word;
+      }}
+      @media (prefers-color-scheme: dark) {{
+        body {{ color: #f9fafb; }}
+        code {{ background: #374151; color: #f9fafb; }}
+      }}
+      strong {{ font-weight: 700; }}
+      code {{
+        background: #f3f4f6;
+        border-radius: 6px;
+        padding: 0.1rem 0.35rem;
+      }}
+      ul, ol {{ margin: 0.4rem 0 0.8rem 1.2rem; padding: 0; }}
+      li {{ margin: 0.25rem 0; }}
+    </style>
+  </head>
+  <body><div>{html_body}</div></body>
+</html>"""
     components.html(html, height=render_height, scrolling=False)
 
 
@@ -108,6 +111,7 @@ def init_state() -> None:
         "current_index": 0,
         "answers": {},
         "cheated": set(),
+        "selected_count": 50,
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -116,14 +120,15 @@ def init_state() -> None:
 
 def start_quiz() -> None:
     questions = load_questions()
-    st.session_state.quiz_questions = random.sample(questions, QUESTION_COUNT)
+    count = st.session_state.selected_count
+    st.session_state.quiz_questions = random.sample(questions, count)
     st.session_state.quiz_started = True
     st.session_state.quiz_finished = False
     st.session_state.current_index = 0
     st.session_state.answers = {}
     st.session_state.cheated = set()
 
-    for index in range(QUESTION_COUNT):
+    for index in range(count):
         st.session_state.pop(f"answer_{index}", None)
         st.session_state.pop(f"cheat_{index}", None)
 
@@ -184,7 +189,7 @@ def render_quiz() -> None:
     st.progress((index + 1) / len(st.session_state.quiz_questions))
     st.caption(f"第 {index + 1} / {len(st.session_state.quiz_questions)} 題")
 
-    render_math_block(question["question"], font_size=22, height=estimate_html_height(question["question"], base=50))
+    render_math_block(question["question"], font_size=22)
     st.caption(f"難度：{question['difficulty']} | 來源：{question['source']}")
 
     option_keys = [opt["key"] for opt in question["options"]]
@@ -241,17 +246,17 @@ def render_result() -> None:
             ),
             unsafe_allow_html=True,
         )
-        render_math_block(f"題目：{question['question']}", font_size=20, height=estimate_html_height(question["question"], base=55))
+        render_math_block(f"題目：{question['question']}", font_size=20)
         options_text = "\n".join(f"{option['key']}. {option['text']}" for option in question["options"])
-        render_math_block(options_text, font_size=18, height=estimate_html_height(options_text, base=20))
-        render_math_block(f"你的答案：{user_answer_label}", font_size=18, height=36)
-        render_math_block(f"正確答案：{question['answer']}", font_size=18, height=36)
+        render_math_block(options_text, font_size=18)
+        render_math_block(f"你的答案：{user_answer_label}", font_size=18)
+        render_math_block(f"正確答案：{question['answer']}", font_size=18)
         if cheated:
             st.warning("這一題曾開啟作弊模式，因此不計分。")
         render_math_block(f"詳解：\n\n{question['explanation']}", font_size=18)
         st.divider()
 
-    st.button("重新抽 50 題", on_click=restart_quiz)
+    st.button(f"重新抽 {len(st.session_state.quiz_questions)} 題", on_click=restart_quiz)
 
 
 def main() -> None:
@@ -259,10 +264,16 @@ def main() -> None:
     init_state()
 
     st.title(PAGE_TITLE)
-    st.write("系統會從 150 題題庫中隨機抽出 50 題，每次只顯示 1 題。")
+    st.write("系統會從題庫中隨機抽題，每次只顯示 1 題。")
     st.write("每題 2 分；若開啟作弊模式，會立即顯示答案與詳解，但該題不計分。")
 
     if not st.session_state.quiz_started:
+        st.session_state.selected_count = st.radio(
+            "選擇題數",
+            options=[10, 30, 50],
+            index=[10, 30, 50].index(st.session_state.selected_count),
+            horizontal=True,
+        )
         st.button("開始測驗", on_click=start_quiz, type="primary")
         return
 
