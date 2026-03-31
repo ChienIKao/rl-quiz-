@@ -48,10 +48,6 @@ def estimate_html_height(text: str, font_size: int = 18) -> int:
 
 
 def render_math_block(text: str, *, font_size: int = 18) -> None:
-    is_dark = st.get_option("theme.base") == "dark"
-    text_color = "#f9fafb" if is_dark else "#111827"
-    code_bg = "#374151" if is_dark else "#f3f4f6"
-
     formatted = format_math_text(text)
     html_body = escape(formatted)
     # Convert newlines to <br> but protect $$ ... $$ display math blocks,
@@ -68,6 +64,31 @@ def render_math_block(text: str, *, font_size: int = 18) -> None:
   <head>
     <meta charset="utf-8" />
     <script>
+      // Detect dark/light by reading .stApp background; re-apply on theme change
+      (function() {{
+        function applyTheme() {{
+          try {{
+            var p = window.parent;
+            var appEl = p.document.querySelector('.stApp');
+            var bg = appEl ? p.getComputedStyle(appEl).backgroundColor : '';
+            var m = bg.match(/(\d+),\s*(\d+),\s*(\d+)/);
+            if (m) {{
+              var lum = (0.299 * +m[1] + 0.587 * +m[2] + 0.114 * +m[3]) / 255;
+              var dark = lum < 0.5;
+              document.documentElement.style.setProperty('--text-color', dark ? '#f9fafb' : '#111827');
+              document.documentElement.style.setProperty('--code-bg',   dark ? '#374151' : '#f3f4f6');
+            }}
+          }} catch(e) {{}}
+        }}
+        applyTheme();
+        try {{
+          // Re-apply whenever Streamlit toggles a class/attribute on <html>
+          new MutationObserver(applyTheme).observe(
+            window.parent.document.documentElement,
+            {{ attributes: true }}
+          );
+        }} catch(e) {{}}
+      }})();
       window.MathJax = {{
         tex: {{
           inlineMath: [['$','$'],['\\\\(','\\\\)']],
@@ -78,11 +99,12 @@ def render_math_block(text: str, *, font_size: int = 18) -> None:
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     <style>
+      :root {{ --text-color: #111827; --code-bg: #f3f4f6; }}
       * {{ box-sizing: border-box; }}
       html, body {{ margin: 0; padding: 0; overflow: hidden; }}
       body {{
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: {text_color};
+        color: var(--text-color);
         background: transparent;
         font-size: {font_size}px;
         line-height: 1.5;
@@ -90,8 +112,8 @@ def render_math_block(text: str, *, font_size: int = 18) -> None:
       }}
       strong {{ font-weight: 700; }}
       code {{
-        background: {code_bg};
-        color: {text_color};
+        background: var(--code-bg);
+        color: var(--text-color);
         border-radius: 6px;
         padding: 0.1rem 0.35rem;
       }}
