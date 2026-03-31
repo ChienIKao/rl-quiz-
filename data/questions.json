@@ -1,0 +1,4052 @@
+[
+  {
+    "source": "ChatGPT",
+    "source_question_no": 1,
+    "difficulty": "簡單",
+    "question": "在強化學習的 Agent-Environment Interface 中，Agent 在每個時間步首先會接收到什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Reward"
+      },
+      {
+        "key": "B",
+        "text": "State 的表示"
+      },
+      {
+        "key": "C",
+        "text": "最佳 policy"
+      },
+      {
+        "key": "D",
+        "text": "Q 值表"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 中指出，Agent 在每一步 $t$ 會先接收到環境狀態的表示 $S_t \\in S$，然後選擇一個動作 $A_t \\in A(s)$，接著才會因為該動作獲得 reward $R_{t+1}$。所以最先接收到的是 state 的表示，不是 reward。",
+    "id": 1
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 2,
+    "difficulty": "簡單",
+    "question": "Policy 的意義最接近下列何者？",
+    "options": [
+      {
+        "key": "A",
+        "text": "從 state 到 action 的對應規則"
+      },
+      {
+        "key": "B",
+        "text": "從 reward 到 state 的函數"
+      },
+      {
+        "key": "C",
+        "text": "從 action 到 state 的轉移機率"
+      },
+      {
+        "key": "D",
+        "text": "從 state 到 reward 的折扣函數"
+      }
+    ],
+    "answer": "A",
+    "explanation": "PDF 將 policy 定義為 state 到 action 的 mapping，寫成 $\\pi(a|s)$，表示在狀態 ( s ) 下選擇動作 ( a ) 的機率。因此 policy 描述的是「遇到某個 state 時要如何選 action」。",
+    "id": 2
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 3,
+    "difficulty": "簡單",
+    "question": "在 return $G_t$ 的公式中，符號 $\\gamma$ 代表什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Learning rate"
+      },
+      {
+        "key": "B",
+        "text": "Horizon"
+      },
+      {
+        "key": "C",
+        "text": "Discount factor"
+      },
+      {
+        "key": "D",
+        "text": "Transition probability"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 中的 return 公式為\n$$\nG_t = \\sum_{k=0}^{H} \\gamma^k r_{t+k+1}\n$$\n其中 $\\gamma$ 被明確稱為 discount factor，用來折扣未來的 reward。若 $\\gamma$ 越小，越不重視遠期回報；越接近 1，越重視長期回報。",
+    "id": 3
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 4,
+    "difficulty": "簡單",
+    "question": "下列何者**不是** MDP 的組成元素？",
+    "options": [
+      {
+        "key": "A",
+        "text": "( S )"
+      },
+      {
+        "key": "B",
+        "text": "( A )"
+      },
+      {
+        "key": "C",
+        "text": "( P )"
+      },
+      {
+        "key": "D",
+        "text": "$\\alpha$"
+      }
+    ],
+    "answer": "D",
+    "explanation": "PDF 說明 MDP 是一個 5-tuple：\n$$\n(S, A, P, R, \\gamma)\n$$\n分別代表 states、actions、transition probabilities、reward、discount factor。$\\alpha$ 是 learning rate，常出現在 MC、TD、Sarsa、Q-learning 中，但不是 MDP 定義的一部分。",
+    "id": 4
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 5,
+    "difficulty": "簡單",
+    "question": "$V^\\pi(s)$ 代表什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "在 state ( s ) 下立即得到的 reward"
+      },
+      {
+        "key": "B",
+        "text": "在 policy $\\pi$ 下，從 state ( s ) 出發的期望累積折扣回報"
+      },
+      {
+        "key": "C",
+        "text": "在 state ( s ) 下所有 action 的平均 reward"
+      },
+      {
+        "key": "D",
+        "text": "從 state ( s ) 轉移到下一狀態的機率"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 將 value function 定義為\n$$\nV^\\pi(s) = E[G_t \\mid S_t = s]\n$$\n也就是在策略 $\\pi$ 下，從狀態 $s$ 開始並持續依照該策略行動時，所能得到的期望累積折扣 reward。它不是單一步的 reward，而是整體長期表現的估計。",
+    "id": 5
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 6,
+    "difficulty": "簡單",
+    "question": "$q^\\pi(s,a)$ 代表什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "在 state-action 配對下的期望回報"
+      },
+      {
+        "key": "B",
+        "text": "在 state ( s ) 的轉移機率"
+      },
+      {
+        "key": "C",
+        "text": "最佳 policy"
+      },
+      {
+        "key": "D",
+        "text": "折扣因子"
+      }
+    ],
+    "answer": "A",
+    "explanation": "PDF 將 action-value function 定義為\n$$\nq^\\pi(s,a) = E_\\pi[G_t \\mid S_t = s, A_t = a]\n$$\n意思是：在 state $s$ 先採取 action $a$，之後再依循 policy $\\pi$ 時，所能得到的期望回報。它比 $V^\\pi(s)$ 更細，因為它把 action 也納入考慮。",
+    "id": 6
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 7,
+    "difficulty": "簡單",
+    "question": "最佳 value function ( V^*(s) ) 的定義為何？",
+    "options": [
+      {
+        "key": "A",
+        "text": "( \\min_\\pi V^\\pi(s) )"
+      },
+      {
+        "key": "B",
+        "text": "( \\max_\\pi V^\\pi(s) )"
+      },
+      {
+        "key": "C",
+        "text": "( \\sum_\\pi V^\\pi(s) )"
+      },
+      {
+        "key": "D",
+        "text": "( V^\\pi(s) - q^\\pi(s,a) )"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 中給出\n$$\nV^*(s) = \\max_\\pi V^\\pi(s)\n$$\n表示在所有可能的 policy 中，找出能讓 state ( s ) 的價值最大的那個。也就是說，最佳 value function 代表「若採用最佳策略，從該 state 出發最多能期待拿到多少回報」。",
+    "id": 7
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 8,
+    "difficulty": "簡單",
+    "question": "下列何者最能描述 Bellman equation 的核心精神？",
+    "options": [
+      {
+        "key": "A",
+        "text": "將問題一次算完，不可拆分"
+      },
+      {
+        "key": "B",
+        "text": "利用遞迴把目前價值寫成即時 reward 與未來價值的組合"
+      },
+      {
+        "key": "C",
+        "text": "只考慮 immediate reward"
+      },
+      {
+        "key": "D",
+        "text": "完全不考慮 state transition"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Bellman equation 的重要性在於它揭示了 value function 與 Q function 的遞迴結構：目前 state 的價值，可以分解成當前 reward 加上未來 state 價值的折扣期望。這種「大問題拆成子問題」的特性，就是 dynamic programming 能成立的基礎。",
+    "id": 8
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 9,
+    "difficulty": "簡單",
+    "question": "Policy iteration 包含哪兩個主要步驟？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Exploration 與 exploitation"
+      },
+      {
+        "key": "B",
+        "text": "Policy evaluation 與 policy improvement"
+      },
+      {
+        "key": "C",
+        "text": "Sampling 與 replay"
+      },
+      {
+        "key": "D",
+        "text": "Prediction 與 classification"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 的 Policy Iteration 演算法明確分成兩階段：\n\n1. **Policy Evaluation**：在固定 policy 下計算 ( V(s) )\n2. **Policy Improvement**：根據目前的 ( V(s) ) 改善 policy\n反覆進行直到 policy stable 為止。",
+    "id": 9
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 10,
+    "difficulty": "簡單",
+    "question": "Value iteration 的更新核心是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "對所有 action 取平均"
+      },
+      {
+        "key": "B",
+        "text": "對所有 state 取最小值"
+      },
+      {
+        "key": "C",
+        "text": "對所有 action 取最大值"
+      },
+      {
+        "key": "D",
+        "text": "對所有 reward 做排序"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 中 Value Iteration 的更新式為\n$$\nV(s) \\leftarrow \\max_a \\sum_{s',r} p(s',r|s,a)[r+\\gamma V(s')]\n$$\n可見它對 action 做 maximization，因此每次都直接往更好的 action 靠近，而不是先完整評估 policy 再改善。這也是它相對簡潔的原因。",
+    "id": 10
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 11,
+    "difficulty": "簡單",
+    "question": "Monte Carlo 方法在 PDF 中被描述為哪一類方法？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Model-based"
+      },
+      {
+        "key": "B",
+        "text": "Model-free"
+      },
+      {
+        "key": "C",
+        "text": "Supervised"
+      },
+      {
+        "key": "D",
+        "text": "Deterministic"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 直接寫出：Monte Carlo (MC) is a **Model Free method**。也就是說，MC 不需要知道完整的環境轉移機率或 reward model，而是透過實際 sample 到的 episode return 來估計 value 或 Q。",
+    "id": 11
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 12,
+    "difficulty": "簡單",
+    "question": "Sarsa 屬於哪一種控制方法？",
+    "options": [
+      {
+        "key": "A",
+        "text": "On-policy TD control"
+      },
+      {
+        "key": "B",
+        "text": "Off-policy TD control"
+      },
+      {
+        "key": "C",
+        "text": "Model-based planning"
+      },
+      {
+        "key": "D",
+        "text": "Dynamic programming"
+      }
+    ],
+    "answer": "A",
+    "explanation": "PDF 中直接說明：Sarsa is an **on-policy TD control**。\n它的更新會使用實際按照當前 policy 選出的下一個 action $a_{t+1}$，因此學習的目標與行為策略一致，屬於 on-policy。",
+    "id": 12
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 13,
+    "difficulty": "簡單",
+    "question": "Q-learning 屬於哪一種類型？",
+    "options": [
+      {
+        "key": "A",
+        "text": "On-policy"
+      },
+      {
+        "key": "B",
+        "text": "Off-policy"
+      },
+      {
+        "key": "C",
+        "text": "Monte Carlo only"
+      },
+      {
+        "key": "D",
+        "text": "Policy iteration only"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 雖然在標題寫的是 Temporal Difference - Q Learning，但從更新式可看出它使用\n$$\nr + \\gamma \\max_{a'} Q(s',a')\n$$\n這裡的下一步採用的是「最佳可能 action」的值，而不是實際依當前行為 policy 選出的 action，因此 Q-learning 屬於 off-policy 方法。",
+    "id": 13
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 14,
+    "difficulty": "簡單",
+    "question": "Deep Q Learning 以什麼取代傳統的 Q function 表示方式？",
+    "options": [
+      {
+        "key": "A",
+        "text": "決策樹"
+      },
+      {
+        "key": "B",
+        "text": "線性回歸"
+      },
+      {
+        "key": "C",
+        "text": "深度神經網路"
+      },
+      {
+        "key": "D",
+        "text": "K-means"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 指出，Deep Q Learning 以一個 deep neural network，也就是 Q-network，來近似 Q function。這讓方法能處理較大的 state space，而不必像 tabular Q-learning 那樣為每個 state-action pair 都存一個明確表格值。",
+    "id": 14
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 15,
+    "difficulty": "簡單",
+    "question": "Deep Q Learning 中的 replay memory 主要用來儲存什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "只有 states"
+      },
+      {
+        "key": "B",
+        "text": "只有 rewards"
+      },
+      {
+        "key": "C",
+        "text": "transitions"
+      },
+      {
+        "key": "D",
+        "text": "只有 actions"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 的 DQL 演算法中寫到要將 transition\n$$\n(s, a, r, s')\n$$\n存入 replay memory ( D )。之後再從 ( D ) 中隨機抽 minibatch 訓練。換句話說，memory 裡不是只存 state 或 reward，而是完整的 transition 經驗。",
+    "id": 15
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 16,
+    "difficulty": "中等",
+    "question": "下列對 return $G_t$ 的敘述何者正確？",
+    "options": [
+      {
+        "key": "A",
+        "text": "只包含當前 reward"
+      },
+      {
+        "key": "B",
+        "text": "只包含未來第一步 reward"
+      },
+      {
+        "key": "C",
+        "text": "是未來 reward 的折扣總和"
+      },
+      {
+        "key": "D",
+        "text": "與 discount factor 無關"
+      }
+    ],
+    "answer": "C",
+    "explanation": "根據 PDF，\n$$\nG_t = \\sum_{k=0}^{H}\\gamma^k r_{t+k+1}\n$$\nreturn 是未來多個 reward 經過折扣後的加總，因此不是只有當下 reward，也不會與$\\gamma$ 無關。",
+    "id": 16
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 17,
+    "difficulty": "中等",
+    "question": "當 $\\gamma$ 越接近 1 時，代表 Agent 傾向如何？",
+    "options": [
+      {
+        "key": "A",
+        "text": "只重視短期 reward"
+      },
+      {
+        "key": "B",
+        "text": "完全忽略未來"
+      },
+      {
+        "key": "C",
+        "text": "更重視長期 reward"
+      },
+      {
+        "key": "D",
+        "text": "不再需要 policy"
+      }
+    ],
+    "answer": "C",
+    "explanation": "當 $\\gamma$ 越大，未來 reward 被折扣得越少，因此長期回報對目前決策的影響越大。反之，若 $\\gamma$ 很小，Agent 會偏向短視近利，只重視近期 reward。",
+    "id": 17
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 18,
+    "difficulty": "中等",
+    "question": "Bellman equation 中，( V^\\pi(s) ) 會對哪個變數做加權平均？",
+    "options": [
+      {
+        "key": "A",
+        "text": "只對 state"
+      },
+      {
+        "key": "B",
+        "text": "只對 reward"
+      },
+      {
+        "key": "C",
+        "text": "先對 action，再對可能的轉移結果"
+      },
+      {
+        "key": "D",
+        "text": "只對 policy"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 中的 Bellman equation 顯示\n$$\nV^\\pi(s)=\\sum_a \\pi(a|s)\\sum_{s',r}p(s',r|s,a)\\left[r+\\gamma V^\\pi(s')\\right]\n$$\n先依照 policy$\\pi(a|s)$ 對 action 加權，再依照 transition probability 對 ( s',r ) 加權。因此答案是先對 action，再對可能結果加權。",
+    "id": 18
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 19,
+    "difficulty": "中等",
+    "question": "下列哪一項最符合 Bellman optimality 的想法？",
+    "options": [
+      {
+        "key": "A",
+        "text": "對 action 取平均"
+      },
+      {
+        "key": "B",
+        "text": "對 action 取最大值"
+      },
+      {
+        "key": "C",
+        "text": "固定 policy 不變"
+      },
+      {
+        "key": "D",
+        "text": "只更新 reward"
+      }
+    ],
+    "answer": "B",
+    "explanation": "在最佳化情境下，我們希望每個 state 都選擇最好的 action，因此 value iteration 和 optimal value 的表示都會出現 max over actions。這正是 Bellman optimality 的精神：用最佳可能選擇來定義 state 的最優價值。",
+    "id": 19
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 20,
+    "difficulty": "中等",
+    "question": "根據 PDF，( V^*(s) ) 與 ( q^*(s,a) ) 的關係為何？",
+    "options": [
+      {
+        "key": "A",
+        "text": "( V^*(s)=\\min_a q^*(s,a) )"
+      },
+      {
+        "key": "B",
+        "text": "( V^*(s)=\\max_a q^*(s,a) )"
+      },
+      {
+        "key": "C",
+        "text": "( V^*(s)=\\sum_a q^*(s,a) )"
+      },
+      {
+        "key": "D",
+        "text": "( V^*(s)=q^*(s,s) )"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 明確寫出\n$$\nV^*(s)=\\max_{a\\in A(s)} q^{\\pi^*}(s,a)\n$$\n意思是：某一狀態在最佳 policy 下的價值，等於在那個狀態中所有可選 action 裡，最佳 action 所對應的 Q 值。",
+    "id": 20
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 21,
+    "difficulty": "中等",
+    "question": "Policy iteration 何時可以停止？",
+    "options": [
+      {
+        "key": "A",
+        "text": "當所有 reward 都變成 0"
+      },
+      {
+        "key": "B",
+        "text": "當 $\\gamma = 0$"
+      },
+      {
+        "key": "C",
+        "text": "當 policy stable"
+      },
+      {
+        "key": "D",
+        "text": "當 action 數量固定"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 在 policy improvement 後檢查 `policy-stable`。若舊 action 與更新後 action 不再改變，表示 policy 已穩定，可以回傳近似最佳的 $V^*$與$\\pi^*$。因此停止條件是 policy stable。",
+    "id": 21
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 22,
+    "difficulty": "中等",
+    "question": "Value iteration 與 policy iteration 的主要差異之一是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Value iteration 不使用 Bellman equation"
+      },
+      {
+        "key": "B",
+        "text": "Value iteration 將 evaluation 與 improvement 合併"
+      },
+      {
+        "key": "C",
+        "text": "Policy iteration 不需要 state"
+      },
+      {
+        "key": "D",
+        "text": "Value iteration 只適用於 model-free"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 提到 value iteration 可以避免等到 ( V(s) ) 完全收斂才 improvement，而是把 truncated policy evaluation 和 policy improvement 合併成一次更新。這就是它與 policy iteration 的關鍵差異。",
+    "id": 22
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 23,
+    "difficulty": "中等",
+    "question": "Monte Carlo first-visit 的更新依據是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "每次出現 state-action 都更新"
+      },
+      {
+        "key": "B",
+        "text": "第一個出現的 state-action 之後的 return"
+      },
+      {
+        "key": "C",
+        "text": "最大 Q 值"
+      },
+      {
+        "key": "D",
+        "text": "TD error"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 的 Monte Carlo first-visit 演算法說明：對 episode 中出現的每一個 state-action pair，取該 pair **第一次出現**之後的 return ( G )，加入 Returns(s,a)，再更新 ( Q(s,a) ) 為平均值。這是 first-visit 的核心。",
+    "id": 23
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 24,
+    "difficulty": "中等",
+    "question": "在非平穩問題中，Monte Carlo 對 $V(S_t)$ 的更新式使用了哪個參數來控制遺忘舊經驗的程度？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$\\gamma$"
+      },
+      {
+        "key": "B",
+        "text": "$\\theta$"
+      },
+      {
+        "key": "C",
+        "text": "$\\alpha$"
+      },
+      {
+        "key": "D",
+        "text": "$\\lambda$"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 給出非平穩問題中的 MC 更新：\n$$\nV(S_t) \\leftarrow V(S_t) + \\alpha [G_t - V(S_t)]\n$$\n其中 $\\alpha$ 是 learning rate，也被說明為 \"how much we want to forget about past experiences\"。因此答案是 $\\alpha$。",
+    "id": 24
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 25,
+    "difficulty": "中等",
+    "question": "Sarsa 的更新式使用哪一個目標？",
+    "options": [
+      {
+        "key": "A",
+        "text": "( r + \\gamma \\max_{a'}Q(s',a') )"
+      },
+      {
+        "key": "B",
+        "text": "( r + \\gamma Q(s',a') )，其中 ( a' ) 為實際依 policy 選出的 action"
+      },
+      {
+        "key": "C",
+        "text": "只用 ( r )"
+      },
+      {
+        "key": "D",
+        "text": "只用 ( Q(s,a) )"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Sarsa 的更新式為\n$$\nQ(s_t,a_t) \\leftarrow Q(s_t,a_t) + \\alpha [r_t + \\gamma Q(s_{t+1}, a_{t+1}) - Q(s_t,a_t)]\n$$\n這裡的 $a_{t+1}$ 是根據當前 policy 選出的下一動作，而不是取最大值，因此它是 on-policy。",
+    "id": 25
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 26,
+    "difficulty": "中等",
+    "question": "Q-learning 的更新目標與 Sarsa 最大不同在於什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Q-learning 不使用 reward"
+      },
+      {
+        "key": "B",
+        "text": "Q-learning 使用下一步實際執行的 action"
+      },
+      {
+        "key": "C",
+        "text": "Q-learning 使用下一 state 的最大 Q 值"
+      },
+      {
+        "key": "D",
+        "text": "Q-learning 不使用 learning rate"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Q-learning 的更新式為\n$$\nQ(s,a)\\leftarrow Q(s,a)+\\alpha\\left[r+\\gamma \\max_{a'}Q(s',a')-Q(s,a)\\right]\n$$\n它不是跟著實際 policy 選到的下一個 action，而是直接看下一 state 中最好的 action 值，因此與 Sarsa 的最大差異就是使用 ( \\max_{a'}Q(s',a') )。",
+    "id": 26
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 27,
+    "difficulty": "中等",
+    "question": "n-step Sarsa 中，n-step Q-return 的特點是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "完全不看未來"
+      },
+      {
+        "key": "B",
+        "text": "只使用 1-step reward"
+      },
+      {
+        "key": "C",
+        "text": "累積前 n 步 reward，再接 bootstrap 項"
+      },
+      {
+        "key": "D",
+        "text": "只看 terminal reward"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 給出 n-step return：前面累積數步 reward，最後再加上一個 $\\gamma^n Q(S_{t+n})$ 的 bootstrap 項。也就是說，它介於純 MC 和 1-step TD 之間，是多步回報與 bootstrapping 的結合。",
+    "id": 27
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 28,
+    "difficulty": "中等",
+    "question": "Forward-view Sarsa($\\lambda$) 的 $q_t^\\lambda$ 是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "單一步 return"
+      },
+      {
+        "key": "B",
+        "text": "對不同 n-step return 做加權和"
+      },
+      {
+        "key": "C",
+        "text": "最佳 policy"
+      },
+      {
+        "key": "D",
+        "text": "單純的 reward 平均值"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 顯示\n$$\nq_t^\\lambda = (1-\\lambda) \\sum_{n=1}^{\\infty} \\lambda^{n-1} q_t^{(n)}\n$$\n表示它把不同長度的 n-step return 依照 $\\lambda$ 做加權整合，所以不是單一 return，而是多個 n-step return 的混合。",
+    "id": 28
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 29,
+    "difficulty": "中等",
+    "question": "Temporal Difference 方法的核心特性是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "必須完整知道環境模型"
+      },
+      {
+        "key": "B",
+        "text": "用估計值取代完整 episode return"
+      },
+      {
+        "key": "C",
+        "text": "一定等整個 episode 結束才更新"
+      },
+      {
+        "key": "D",
+        "text": "只適用於 deterministic 環境"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 指出 TD methods 直接從 raw experience 學習，不需要環境 model，且它用\n$$\nR_{t+1} + \\gamma V(S_{t+1})\n$$\n這種估計值來取代完整的 $G_t$。這就是 bootstrapping，也代表它不一定要等 episode 結束才更新。",
+    "id": 29
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 30,
+    "difficulty": "中等",
+    "question": "TD 對 value 的更新式中，目標值是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "( V$S_t$ )"
+      },
+      {
+        "key": "B",
+        "text": "( R_{t+1} + \\gamma V$S_{t+1}$ )"
+      },
+      {
+        "key": "C",
+        "text": "( \\max_a Q$S_t,a$ )"
+      },
+      {
+        "key": "D",
+        "text": "$G_t$ 的完整總和"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 給出的 TD 更新為\n$$\nV(S_t) \\leftarrow V(S_t) + \\alpha \\bigl[R_{t+1} + \\gamma V(S_{t+1}) - V(S_t)\\bigr]\n$$\n所以它使用的目標是「當前 reward + 下一 state value 的折扣估計」，而不是完整 episode return。",
+    "id": 30
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 31,
+    "difficulty": "中等",
+    "question": "在 PDF 的 Q-learning 演算法中，選 action 時常使用哪種策略？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Beam search"
+      },
+      {
+        "key": "B",
+        "text": "$\\epsilon$-greedy"
+      },
+      {
+        "key": "C",
+        "text": "BFS"
+      },
+      {
+        "key": "D",
+        "text": "Backtracking"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 在 Q-learning 演算法中提到：Choose $a$ from $s$ using policy derived from Q (e.g., $\\epsilon$-greedy)。這表示常見的做法是用 $\\epsilon$-greedy 來平衡 exploration 與 exploitation。",
+    "id": 31
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 32,
+    "difficulty": "中等",
+    "question": "$\\epsilon$-greedy 中，$\\epsilon$ 的作用是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "控制 discount"
+      },
+      {
+        "key": "B",
+        "text": "控制隨機探索的機率"
+      },
+      {
+        "key": "C",
+        "text": "控制 learning rate"
+      },
+      {
+        "key": "D",
+        "text": "控制 replay memory 大小"
+      }
+    ],
+    "answer": "B",
+    "explanation": "在 $\\epsilon$-greedy 中，大部分時間選目前估計最好的 action，但有機率 $\\epsilon$ 隨機探索其他 action。這樣可避免過早陷入局部最佳。",
+    "id": 32
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 33,
+    "difficulty": "中等",
+    "question": "Deep Q Learning 的 loss $L_i(\\theta_i)$ 中，prediction 是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "( r+\\gamma \\max_{a'}Q(s',a';\\theta_{i-1}) )"
+      },
+      {
+        "key": "B",
+        "text": "$Q(s,a;\\theta_i)$"
+      },
+      {
+        "key": "C",
+        "text": "( V(s) )"
+      },
+      {
+        "key": "D",
+        "text": "$\\pi(a|s)$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 在 DQL 的 loss 公式中標示得很清楚：\n\n- target：( r+\\gamma \\max_a Q(s',a';\\theta_{i-1}) )\n- prediction：$Q(s,a;\\theta_i)$\n因此 prediction 就是目前網路對該 state-action pair 所做的 Q 值預測。",
+    "id": 33
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 34,
+    "difficulty": "中等",
+    "question": "在 DQL 中，target value 主要由哪兩部分組成？",
+    "options": [
+      {
+        "key": "A",
+        "text": "reward 與 policy probability"
+      },
+      {
+        "key": "B",
+        "text": "reward 與 discounted future max Q"
+      },
+      {
+        "key": "C",
+        "text": "state 與 action"
+      },
+      {
+        "key": "D",
+        "text": "replay memory 與 learning rate"
+      }
+    ],
+    "answer": "B",
+    "explanation": "從 PDF 的 target 可看出，非 terminal 狀態時\n$$\ny_j = r_j + \\gamma \\max_a Q(s'_j,a';\\theta)\n$$\n因此它由即時 reward 和未來最佳 Q 值的折扣部分組成。若是 terminal state，則只有 $r_j$。",
+    "id": 34
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 35,
+    "difficulty": "中等",
+    "question": "在 DQL 中，若 $s'_j$ 是 terminal state，則 $y_j$ 應設為何？",
+    "options": [
+      {
+        "key": "A",
+        "text": "( 0 )"
+      },
+      {
+        "key": "B",
+        "text": "( \\gamma \\max_a Q$s'_j,a'$ )"
+      },
+      {
+        "key": "C",
+        "text": "$r_j$"
+      },
+      {
+        "key": "D",
+        "text": "( r_j + Q$s_j,a_j$ )"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 在演算法裡明確寫到：\n- terminal $s'_j$：$y_j = r_j$\n- non-terminal $s'_j$：$y_j = r_j + \\gamma \\max_a Q(s'_j,a')$\n因為終止狀態之後沒有未來回報，所以 target 只剩下當前 reward。",
+    "id": 35
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 36,
+    "difficulty": "困難",
+    "question": "為什麼 Bellman equation 對 RL 很重要？",
+    "options": [
+      {
+        "key": "A",
+        "text": "因為它讓 reward 變成常數"
+      },
+      {
+        "key": "B",
+        "text": "因為它揭示 value function 的遞迴結構"
+      },
+      {
+        "key": "C",
+        "text": "因為它取消了 transition probability"
+      },
+      {
+        "key": "D",
+        "text": "因為它等價於神經網路"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Bellman equation 讓我們把「當前 state 的價值」寫成「即時 reward + 未來 state 的價值」，形成遞迴結構。這種特性讓 policy evaluation、value iteration 等方法都能成立，也是 dynamic programming 的核心基礎。PDF 特別強調 expanding value/Q 後會出現這種重要 recursive property。",
+    "id": 36
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 37,
+    "difficulty": "困難",
+    "question": "Q-learning 為什麼通常被視為 off-policy？",
+    "options": [
+      {
+        "key": "A",
+        "text": "因為它不更新 Q 值"
+      },
+      {
+        "key": "B",
+        "text": "因為它更新時不依賴任何 action"
+      },
+      {
+        "key": "C",
+        "text": "因為它更新目標使用 greedy 的最大 Q，而非實際行為 policy 的下一動作"
+      },
+      {
+        "key": "D",
+        "text": "因為它一定使用 Monte Carlo"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Q-learning 的更新是看下一 state 中的最大 Q 值，即假設未來會採用最優 action；但實際行動時可能還是透過 $\\epsilon$-greedy 等策略探索。也就是說，行為 policy 與學習目標 policy 可以不同，因此它是 off-policy。",
+    "id": 37
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 38,
+    "difficulty": "困難",
+    "question": "Sarsa 與 Q-learning 的根本差異最準確的描述是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "一個用 state，另一個不用 state"
+      },
+      {
+        "key": "B",
+        "text": "一個用 learning rate，另一個不用"
+      },
+      {
+        "key": "C",
+        "text": "一個根據實際選到的下一 action 更新，另一個根據下一 state 的最佳 action 更新"
+      },
+      {
+        "key": "D",
+        "text": "一個只適合神經網路，另一個只適合表格法"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Sarsa 的更新依據是 ( Q(s',a') )，其中 ( a' ) 是根據目前 policy 實際選出的下一動作；Q-learning 則用 ( \\max_{a'}Q(s',a') )，直接朝理論上最佳動作學習。這就是 on-policy 與 off-policy 的典型差異。",
+    "id": 38
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 39,
+    "difficulty": "困難",
+    "question": "Monte Carlo first-visit 與 every-visit 的概念差異中，根據 PDF 可以確定的是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "PDF 採用 every-visit"
+      },
+      {
+        "key": "B",
+        "text": "PDF 明確使用 first-visit"
+      },
+      {
+        "key": "C",
+        "text": "PDF 不更新 Q 值"
+      },
+      {
+        "key": "D",
+        "text": "PDF 只更新 policy，不更新 value"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 的演算法標題就叫 **Monte Carlo first-visit**，並在步驟中說明「return following the first occurrence of s, a」。因此可確定它採用的是 first-visit，而不是 every-visit。",
+    "id": 39
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 40,
+    "difficulty": "困難",
+    "question": "為何 value iteration 通常比完整的 policy iteration 更直接？",
+    "options": [
+      {
+        "key": "A",
+        "text": "因為它不需要 reward"
+      },
+      {
+        "key": "B",
+        "text": "因為它省略了 policy evaluation"
+      },
+      {
+        "key": "C",
+        "text": "因為它把 improvement 和 truncated evaluation 合成一次更新"
+      },
+      {
+        "key": "D",
+        "text": "因為它只在 terminal state 更新"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 明確指出 value iteration 避免等到 ( V(s) ) 完全收斂，而是把 policy improvement 與 truncated policy evaluation 合併成一個操作。因此它的更新路徑更直接。這不是完全不做 evaluation，而是把 evaluation 簡化並和 improvement 結合。",
+    "id": 40
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 41,
+    "difficulty": "困難",
+    "question": "TD 方法相對 MC 的一個重要特徵是 bootstrapping。這代表什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "用真實完整 return 更新"
+      },
+      {
+        "key": "B",
+        "text": "用目前估計的 value 作為更新目標的一部分"
+      },
+      {
+        "key": "C",
+        "text": "不使用 reward"
+      },
+      {
+        "key": "D",
+        "text": "不使用 state transition"
+      }
+    ],
+    "answer": "B",
+    "explanation": "TD 的更新式中含有 $V(S_{t+1})$ 或 $Q(s',a')$ 這類「目前估計值」，表示它用自己的估計輔助更新自己，這就是 bootstrapping。與 MC 使用完整 sample return 相比，TD 更早更新，但也引入估計誤差來源。",
+    "id": 41
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 42,
+    "difficulty": "困難",
+    "question": "Monte Carlo 方法通常變異較大的主要原因是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "它完全不用 reward"
+      },
+      {
+        "key": "B",
+        "text": "它一定需要環境模型"
+      },
+      {
+        "key": "C",
+        "text": "它依賴整條 episode 的實際 return"
+      },
+      {
+        "key": "D",
+        "text": "它只能用於 deterministic 環境"
+      }
+    ],
+    "answer": "C",
+    "explanation": "MC 直接用 sample return $G_t$ 更新，這個 return 可能受到整條 episode 中後續隨機性的影響，因此估計波動通常較大。雖然 PDF 沒直接寫 variance 一詞，但從其「averaging sample returns」與完整 return 機制可合理推得這點。這是依 PDF 內容作出的推論。",
+    "id": 42
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 43,
+    "difficulty": "困難",
+    "question": "n-step Sarsa 可被視為在何者之間折衷？",
+    "options": [
+      {
+        "key": "A",
+        "text": "DP 與 supervised learning"
+      },
+      {
+        "key": "B",
+        "text": "1-step TD 與 Monte Carlo"
+      },
+      {
+        "key": "C",
+        "text": "Policy iteration 與 value iteration"
+      },
+      {
+        "key": "D",
+        "text": "Q-network 與 replay memory"
+      }
+    ],
+    "answer": "B",
+    "explanation": "n-step Sarsa 前面累積多步實際 reward，但最後仍接一個 bootstrap 的 $Q(S_{t+n})$ 項。因此它不像 1-step TD 那麼短視，也不像 MC 那樣要等完整 episode，正好處於兩者之間。",
+    "id": 43
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 44,
+    "difficulty": "困難",
+    "question": "在 Forward-view Sarsa($\\lambda$) 中，$\\lambda$ 的功能最接近下列何者？",
+    "options": [
+      {
+        "key": "A",
+        "text": "控制不同 n-step return 的權重分配"
+      },
+      {
+        "key": "B",
+        "text": "控制 discount factor"
+      },
+      {
+        "key": "C",
+        "text": "控制 replay memory 大小"
+      },
+      {
+        "key": "D",
+        "text": "控制 terminal state 數量"
+      }
+    ],
+    "answer": "A",
+    "explanation": "PDF 給出 $$q_t^\\lambda = (1-\\lambda)\\sum_{n=1}^{\\infty}\\lambda^{n-1}q_t^{(n)}$$，由這個式子可看出，$\\lambda$ 是用來調整不同 n-step returns 權重的參數。它不是 discount factor，discount factor 是 $\\gamma$。",
+    "id": 44
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 45,
+    "difficulty": "困難",
+    "question": "Deep Q Learning 中使用 replay memory 的一個重要目的為何？",
+    "options": [
+      {
+        "key": "A",
+        "text": "讓 action 數量增加"
+      },
+      {
+        "key": "B",
+        "text": "儲存 policy 公式"
+      },
+      {
+        "key": "C",
+        "text": "從經驗中隨機抽樣以訓練網路"
+      },
+      {
+        "key": "D",
+        "text": "讓 reward 固定"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 描述 DQL 會把 transition 存進記憶體 ( D )，之後 sample random minibatch of transitions 來訓練。這代表 replay memory 的核心用途之一就是讓網路從已收集的經驗中隨機抽樣學習，而不是照原始時間順序直接學。",
+    "id": 45
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 46,
+    "difficulty": "困難",
+    "question": "DQL loss 公式中的 target 與 prediction 使用不同參數或時間點的估計，其主要用意是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "讓 Q 值永遠為 0"
+      },
+      {
+        "key": "B",
+        "text": "使訓練目標更穩定"
+      },
+      {
+        "key": "C",
+        "text": "取消 discount factor"
+      },
+      {
+        "key": "D",
+        "text": "取代 replay memory"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 的 loss 式寫成 prediction 與 target 的平方差，target 使用的是前一輪或另一時間點的估計 $\\theta_{i-1}$，prediction 用目前參數 $\\theta_i$。這種分離可以避免目標與預測同時劇烈變動，讓訓練較穩。這是從公式結構可直接理解出的功能。",
+    "id": 46
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 47,
+    "difficulty": "困難",
+    "question": "在 policy iteration 的 improvement 步驟中，更新 policy 的依據是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "任意挑一個 action"
+      },
+      {
+        "key": "B",
+        "text": "選擇使 ( \\sum_{s',r}p(s',r|s,a)[r+\\gamma V(s')] ) 最大的 action"
+      },
+      {
+        "key": "C",
+        "text": "選 reward 最小的 action"
+      },
+      {
+        "key": "D",
+        "text": "選最少出現的 action"
+      }
+    ],
+    "answer": "B",
+    "explanation": "PDF 的 policy improvement 寫成\n$$\n\\pi(s)\\leftarrow \\arg\\max_a \\sum_{s',r}p(s',r|s,a)[r+\\gamma V(s')]\n$$\n意思是根據目前的 value function，挑出能使期望回報最大的 action。這正是 greedy improvement。",
+    "id": 47
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 48,
+    "difficulty": "困難",
+    "question": "在 value iteration 收斂後，輸出的 deterministic policy 如何取得？",
+    "options": [
+      {
+        "key": "A",
+        "text": "對每個 state 隨機選 action"
+      },
+      {
+        "key": "B",
+        "text": "固定沿用初始 policy"
+      },
+      {
+        "key": "C",
+        "text": "對每個 state 選擇使 Bellman 更新式最大的 action"
+      },
+      {
+        "key": "D",
+        "text": "直接取 reward 最大的 state"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 最後寫出輸出 policy 為\n$$\n\\pi(s)=\\arg\\max_a \\sum_{s',r}p(s',r|s,a)[r+\\gamma V(s')]\n$$\n也就是對每個 state，選出在 value iteration 收斂後最能提高 value 的那個 action。這樣得到的是 deterministic policy。",
+    "id": 48
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 49,
+    "difficulty": "困難",
+    "question": "根據 PDF，Deep Q Learning 中若採用 $\\epsilon$-greedy，則選 action 的方式為何？",
+    "options": [
+      {
+        "key": "A",
+        "text": "永遠隨機"
+      },
+      {
+        "key": "B",
+        "text": "永遠選最小 Q 值"
+      },
+      {
+        "key": "C",
+        "text": "以機率 $\\epsilon$ 隨機選 action，否則選目前 Q 最大的 action"
+      },
+      {
+        "key": "D",
+        "text": "先選 reward 最大的 state 再選 action"
+      }
+    ],
+    "answer": "C",
+    "explanation": "PDF 在 DQL 演算法中寫道：以機率 $\\epsilon$ 隨機選 action，否則選擇 $a = \\max_a Q(s,a;\\theta)$。這就是 $\\epsilon$-greedy 的標準定義。",
+    "id": 49
+  },
+  {
+    "source": "ChatGPT",
+    "source_question_no": 50,
+    "difficulty": "困難",
+    "question": "下列哪一項最能總結這份 PDF 對 RL 方法的鋪陳順序？",
+    "options": [
+      {
+        "key": "A",
+        "text": "先講 Deep Learning，再講 MDP"
+      },
+      {
+        "key": "B",
+        "text": "從基本 RL 概念與 MDP 開始，接著 value/Q、Bellman、DP、MC、TD，到 DQL"
+      },
+      {
+        "key": "C",
+        "text": "只介紹 Sarsa 與 Q-learning"
+      },
+      {
+        "key": "D",
+        "text": "只介紹神經網路方法"
+      }
+    ],
+    "answer": "B",
+    "explanation": "這份 cheat sheet 的內容順序很清楚：先從 Agent-Environment Interface、Policy、Reward、MDP、Value Function、Q Function、Bellman Equation 開始，再介紹 Dynamic Programming（Policy Iteration、Value Iteration）、Monte Carlo、Sarsa、Q-learning，最後進到 Deep Q Learning。它是一份從基礎到進階的總覽式整理。",
+    "id": 50
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 1,
+    "difficulty": "簡單",
+    "question": "在強化學習的代理人與環境介面中，代理人在每一時間步 $t$ 會接收到環境的何種資訊？",
+    "options": [
+      {
+        "key": "A",
+        "text": "獎勵 $R_t$"
+      },
+      {
+        "key": "B",
+        "text": "動作 $A_t$"
+      },
+      {
+        "key": "C",
+        "text": "狀態表徵 $S_t$"
+      },
+      {
+        "key": "D",
+        "text": "轉移機率 $P$"
+      }
+    ],
+    "answer": "C",
+    "explanation": "代理人在每一步 $t$ 接收環境狀態的表徵 $S_t \\in S$。",
+    "id": 51
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 2,
+    "difficulty": "簡單",
+    "question": "代理人執行動作 $A_t$ 後，從環境獲得的數值回饋稱為？",
+    "options": [
+      {
+        "key": "A",
+        "text": "狀態 (State)"
+      },
+      {
+        "key": "B",
+        "text": "獎勵 (Reward)"
+      },
+      {
+        "key": "C",
+        "text": "策略 (Policy)"
+      },
+      {
+        "key": "D",
+        "text": "價值 (Value)"
+      }
+    ],
+    "answer": "B",
+    "explanation": "作為動作的結果，代理人會收到一個獎勵 $R_{t+1}$。",
+    "id": 52
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 3,
+    "difficulty": "簡單",
+    "question": "策略 (Policy) $\\pi$ 的定義為何？",
+    "options": [
+      {
+        "key": "A",
+        "text": "從動作到獎勵的對映"
+      },
+      {
+        "key": "B",
+        "text": "從狀態到動作的對映"
+      },
+      {
+        "key": "C",
+        "text": "環境的物理規律"
+      },
+      {
+        "key": "D",
+        "text": "累積獎勵的總和"
+      }
+    ],
+    "answer": "B",
+    "explanation": "策略是從狀態到動作的對映 $\\pi_t(s|a)$。",
+    "id": 53
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 4,
+    "difficulty": "簡單",
+    "question": "在總獎勵公式中，$\\gamma$ 代表什麼參數？",
+    "options": [
+      {
+        "key": "A",
+        "text": "學習率"
+      },
+      {
+        "key": "B",
+        "text": "步長"
+      },
+      {
+        "key": "C",
+        "text": "折扣因子 (Discount factor)"
+      },
+      {
+        "key": "D",
+        "text": "隨機探索率"
+      }
+    ],
+    "answer": "C",
+    "explanation": "在 $G_t$ 的計算中，$\\gamma$ 是折扣因子。",
+    "id": 54
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 5,
+    "difficulty": "簡單",
+    "question": "馬可夫決策過程 (MDP) 是由幾個元素組成的多元組 (Tuple)？",
+    "options": [
+      {
+        "key": "A",
+        "text": "3"
+      },
+      {
+        "key": "B",
+        "text": "4"
+      },
+      {
+        "key": "C",
+        "text": "5"
+      },
+      {
+        "key": "D",
+        "text": "6"
+      }
+    ],
+    "answer": "C",
+    "explanation": "MDP 是一個 5-tuple $$\nS, A, P, R, \\gamma\n$$\n。",
+    "id": 55
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 6,
+    "difficulty": "簡單",
+    "question": "狀態價值函數 $V_\\pi(s)$ 衡量的是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "在狀態 $s$ 下執行特定動作的好壞"
+      },
+      {
+        "key": "B",
+        "text": "環境發生變化的機率"
+      },
+      {
+        "key": "C",
+        "text": "在特定策略下處於狀態 $s$ 的預期長期回報"
+      },
+      {
+        "key": "D",
+        "text": "代理人移動的速度"
+      }
+    ],
+    "answer": "C",
+    "explanation": "價值函數描述在特定策略下處於特定狀態 $s$ 有多好。",
+    "id": 56
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 7,
+    "difficulty": "簡單",
+    "question": "蒙地卡羅 (Monte Carlo) 方法的主要特點是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "需要完整的環境模型"
+      },
+      {
+        "key": "B",
+        "text": "是一種 Model-Free (無模型) 方法"
+      },
+      {
+        "key": "C",
+        "text": "僅能處理連續狀態"
+      },
+      {
+        "key": "D",
+        "text": "不需要任何取樣"
+      }
+    ],
+    "answer": "B",
+    "explanation": "蒙地卡羅法是 Model Free 方法，不需要環境動態的完整知識。",
+    "id": 57
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 8,
+    "difficulty": "簡單",
+    "question": "Sarsa 演算法名稱中的 \"r\" 代表什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "狀態 (State)"
+      },
+      {
+        "key": "B",
+        "text": "動作 (Action)"
+      },
+      {
+        "key": "C",
+        "text": "獎勵 (Reward)"
+      },
+      {
+        "key": "D",
+        "text": "學習率 (Rate)"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Sarsa 代表 State-action-reward-state-action。",
+    "id": 58
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 9,
+    "difficulty": "簡單",
+    "question": "在非平穩問題中，更新公式裡的 $\\alpha$ 代表？",
+    "options": [
+      {
+        "key": "A",
+        "text": "折扣因子"
+      },
+      {
+        "key": "B",
+        "text": "學習率 (Learning rate)"
+      },
+      {
+        "key": "C",
+        "text": "遺忘因子"
+      },
+      {
+        "key": "D",
+        "text": "衰減率"
+      }
+    ],
+    "answer": "B",
+    "explanation": "$\\alpha$ 是學習率，決定忘記過去經驗的程度。",
+    "id": 59
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 10,
+    "difficulty": "簡單",
+    "question": "Q-Learning 屬於哪種學習方法？",
+    "options": [
+      {
+        "key": "A",
+        "text": "時序差分 (Temporal Difference)"
+      },
+      {
+        "key": "B",
+        "text": "動態規劃 (Dynamic Programming)"
+      },
+      {
+        "key": "C",
+        "text": "暴力搜索法"
+      },
+      {
+        "key": "D",
+        "text": "監督式學習"
+      }
+    ],
+    "answer": "A",
+    "explanation": "Q-Learning 是時序差分 (TD) 方法的一種。",
+    "id": 60
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 11,
+    "difficulty": "簡單",
+    "question": "深度 Q 學習 (DQL) 是由哪個機構提出的？",
+    "options": [
+      {
+        "key": "A",
+        "text": "OpenAI"
+      },
+      {
+        "key": "B",
+        "text": "Facebook AI Research"
+      },
+      {
+        "key": "C",
+        "text": "DeepMind"
+      },
+      {
+        "key": "D",
+        "text": "Google Brain"
+      }
+    ],
+    "answer": "C",
+    "explanation": "DQL 是由 DeepMind 創造的。",
+    "id": 61
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 12,
+    "difficulty": "簡單",
+    "question": "在 DQL 中，用來儲存過去經驗以便訓練的機制稱為？",
+    "options": [
+      {
+        "key": "A",
+        "text": "策略梯度"
+      },
+      {
+        "key": "B",
+        "text": "經驗回放 (Experience Replay)"
+      },
+      {
+        "key": "C",
+        "text": "貝氏推論"
+      },
+      {
+        "key": "D",
+        "text": "神經網絡優化"
+      }
+    ],
+    "answer": "B",
+    "explanation": "DQL 將觀察結果儲存在記憶中（replay memory）以訓練網絡。",
+    "id": 62
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 13,
+    "difficulty": "簡單",
+    "question": "MDP 中的 $S$ 代表什麼集合？",
+    "options": [
+      {
+        "key": "A",
+        "text": "獎勵集合"
+      },
+      {
+        "key": "B",
+        "text": "動作集合"
+      },
+      {
+        "key": "C",
+        "text": "有限狀態集合"
+      },
+      {
+        "key": "D",
+        "text": "策略集合"
+      }
+    ],
+    "answer": "C",
+    "explanation": "$S$ 代表有限的狀態集合，且 $s \\in S$。",
+    "id": 63
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 14,
+    "difficulty": "簡單",
+    "question": "$G_t = \\sum_{k=0}^{H}\\gamma^{k}r_{t+k+1}$ 中，$H$ 代表？",
+    "options": [
+      {
+        "key": "A",
+        "text": "熵 (Entropy)"
+      },
+      {
+        "key": "B",
+        "text": "地平線/步數限制 (Horizon)"
+      },
+      {
+        "key": "C",
+        "text": "隱藏層數量"
+      },
+      {
+        "key": "D",
+        "text": "歷史長度"
+      }
+    ],
+    "answer": "B",
+    "explanation": "$H$ 是地平線 (horizon)，可以是無限的。",
+    "id": 64
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 15,
+    "difficulty": "簡單",
+    "question": "最優價值函數 (Optimal Value Function) 的符號標記為？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V_\\pi(s)$"
+      },
+      {
+        "key": "B",
+        "text": "$V_*(s)$"
+      },
+      {
+        "key": "C",
+        "text": "$q_\\pi(s, a)$"
+      },
+      {
+        "key": "D",
+        "text": "$G_t$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "最優價值函數標記為 $V_*(s)$。",
+    "id": 65
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 16,
+    "difficulty": "中等",
+    "question": "狀態轉移機率 $p(s'|s,a)$ 代表的意義是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "在狀態 $s(採取動作)a$ 得到獎勵的機率"
+      },
+      {
+        "key": "B",
+        "text": "在狀態 $s(採取動作)a$後轉移到狀態$s'$ 的機率"
+      },
+      {
+        "key": "C",
+        "text": "執行策略 $\\pi$ 的機率"
+      },
+      {
+        "key": "D",
+        "text": "從 $s'$回到$s$ 的機率"
+      }
+    ],
+    "answer": "B",
+    "explanation": "這是轉移機率的定義：$Pr\\{S_{t+1}=s' \\mid S_t=s, A_t=a\\}$。",
+    "id": 66
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 17,
+    "difficulty": "中等",
+    "question": "動作價值函數 $q_\\pi(s,a)$ 與狀態價值函數 $V_\\pi(s)$ 的主要區別在於？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$q$ 函數不考慮獎勵"
+      },
+      {
+        "key": "B",
+        "text": "$V$ 函數考慮了特定的動作對 (state-action pair)"
+      },
+      {
+        "key": "C",
+        "text": "$q(函數衡量在狀態)s$採取特定動作$a$ 後的預期回報"
+      },
+      {
+        "key": "D",
+        "text": "$V$ 函數只適用於離散空間"
+      }
+    ],
+    "answer": "C",
+    "explanation": "$q_\\pi(s,a)$ 標註了狀態與動作對的預期回報。",
+    "id": 67
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 18,
+    "difficulty": "中等",
+    "question": "貝爾曼方程 (Bellman Equation) 的核心特性是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "線性特性"
+      },
+      {
+        "key": "B",
+        "text": "遞迴特性 (Recursive property)"
+      },
+      {
+        "key": "C",
+        "text": "發散特性"
+      },
+      {
+        "key": "D",
+        "text": "卷積特性"
+      }
+    ],
+    "answer": "B",
+    "explanation": "展開價值函數與 Q 函數時會出現重要的遞迴特性。",
+    "id": 68
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 19,
+    "difficulty": "中等",
+    "question": "策略迭代 (Policy Iteration) 演算法包含哪兩個主要步驟？",
+    "options": [
+      {
+        "key": "A",
+        "text": "初始化與終止"
+      },
+      {
+        "key": "B",
+        "text": "策略評估與策略改進"
+      },
+      {
+        "key": "C",
+        "text": "隨機取樣與期望計算"
+      },
+      {
+        "key": "D",
+        "text": "卷積與池化"
+      }
+    ],
+    "answer": "B",
+    "explanation": "策略迭代包含 Policy Evaluation 與 Policy Improvement。",
+    "id": 69
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 20,
+    "difficulty": "中等",
+    "question": "策略評估 (Policy Evaluation) 通常在何時停止？",
+    "options": [
+      {
+        "key": "A",
+        "text": "執行固定 100 次後"
+      },
+      {
+        "key": "B",
+        "text": "當價值函數的變化量 $\\Delta(小於閾值)\\theta$ 時"
+      },
+      {
+        "key": "C",
+        "text": "當獲得正獎勵時"
+      },
+      {
+        "key": "D",
+        "text": "當代理人到達終點時"
+      }
+    ],
+    "answer": "B",
+    "explanation": "當 $\\Delta < \\theta$ 時停止迴圈。",
+    "id": 70
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 21,
+    "difficulty": "中等",
+    "question": "價值迭代 (Value Iteration) 與策略迭代的主要區別是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "價值迭代不需要 $\\gamma$"
+      },
+      {
+        "key": "B",
+        "text": "價值迭代在單一操作中結合了策略改進與截斷的策略評估"
+      },
+      {
+        "key": "C",
+        "text": "策略迭代速度總是比價值迭代快"
+      },
+      {
+        "key": "D",
+        "text": "價值迭代只能用於 Model-Free 環境"
+      }
+    ],
+    "answer": "B",
+    "explanation": "價值迭代避免等待 $V(s)$ 收斂，而是在一步中完成改進與評估。",
+    "id": 71
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 22,
+    "difficulty": "中等",
+    "question": "蒙地卡羅首次訪問 (First-visit MC) 方法如何估算 $Q(s,a)$？",
+    "options": [
+      {
+        "key": "A",
+        "text": "計算單次最高獎勵"
+      },
+      {
+        "key": "B",
+        "text": "平均每個狀態動作對的樣本回報 (Sample returns)"
+      },
+      {
+        "key": "C",
+        "text": "使用神經網絡預測"
+      },
+      {
+        "key": "D",
+        "text": "計算狀態轉移的機率和"
+      }
+    ],
+    "answer": "B",
+    "explanation": "它是基於對每個狀態動作對的樣本回報取平均值。",
+    "id": 72
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 23,
+    "difficulty": "中等",
+    "question": "Sarsa 更新規則 $Q(s_t,a_t) \\leftarrow Q(s_t,a_t) + \\alpha[r_t + \\gamma Q(s_{t+1},a_{t+1}) - Q(s_t,a_t)]$ 表現了什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "它是 Off-policy 更新"
+      },
+      {
+        "key": "B",
+        "text": "它使用下一個狀態與「實際採取的下一個動作」來更新"
+      },
+      {
+        "key": "C",
+        "text": "它不需要學習率 $\\alpha$"
+      },
+      {
+        "key": "D",
+        "text": "它不考慮折扣因子"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Sarsa 使用 $Q(s_{t+1}, a_{t+1})$，也就是當前策略實際選出的下一個動作對應的值來更新。",
+    "id": 73
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 24,
+    "difficulty": "中等",
+    "question": "時序差分 (TD) 方法相對於蒙地卡羅法的優勢是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "TD 需要完整的片段才能更新"
+      },
+      {
+        "key": "B",
+        "text": "TD 可以直接從原始經驗中學習，不需要環境模型"
+      },
+      {
+        "key": "C",
+        "text": "TD 的方差總是比 MC 高"
+      },
+      {
+        "key": "D",
+        "text": "TD 不需要折扣因子"
+      }
+    ],
+    "answer": "B",
+    "explanation": "TD 方法直接從經驗中學習且無需環境動態模型。",
+    "id": 74
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 25,
+    "difficulty": "中等",
+    "question": "Q-Learning 的更新式中，為什麼被稱為 Off-policy？",
+    "options": [
+      {
+        "key": "A",
+        "text": "因為它不使用 $\\gamma$"
+      },
+      {
+        "key": "B",
+        "text": "因為它在更新時使用了 $max_{a'}$ 操作，而非實際執行的動作"
+      },
+      {
+        "key": "C",
+        "text": "因為它不紀錄狀態"
+      },
+      {
+        "key": "D",
+        "text": "因為它只在片段結束時更新"
+      }
+    ],
+    "answer": "B",
+    "explanation": "更新式中使用 $max_{a'}Q(s',a')$，這與代理人實際遵循的策略可能不同。",
+    "id": 75
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 26,
+    "difficulty": "中等",
+    "question": "在 DQL 的損失函數 (Loss Function) 中，目標 (Target) 項包含什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "只有當前獎勵 $r$"
+      },
+      {
+        "key": "B",
+        "text": "$r + \\gamma max_{a'} Q(s', a'; \\theta_{i-1})$"
+      },
+      {
+        "key": "C",
+        "text": "$Q(s, a; \\theta_i)$"
+      },
+      {
+        "key": "D",
+        "text": "$\\pi(a|s)$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "根據損失函數公式，目標項為 $r + \\gamma max_{a'} Q(s', a'; \\theta_{i-1})$。",
+    "id": 76
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 27,
+    "difficulty": "中等",
+    "question": "蒙地卡羅方法中的 $G$ 代表？",
+    "options": [
+      {
+        "key": "A",
+        "text": "隨機變數"
+      },
+      {
+        "key": "B",
+        "text": "片段中某次出現後的樣本回報 (Return)"
+      },
+      {
+        "key": "C",
+        "text": "梯度 (Gradient)"
+      },
+      {
+        "key": "D",
+        "text": "貪婪度 (Greediness)"
+      }
+    ],
+    "answer": "B",
+    "explanation": "$G$ 是在片段中狀態動作對出現後的樣本回報。",
+    "id": 77
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 28,
+    "difficulty": "中等",
+    "question": "動態規劃 (Dynamic Programming) 在 RL 中主要利用了什麼結構？",
+    "options": [
+      {
+        "key": "A",
+        "text": "隨機結構"
+      },
+      {
+        "key": "B",
+        "text": "子問題結構 (Subproblem structure)"
+      },
+      {
+        "key": "C",
+        "text": "循環結構"
+      },
+      {
+        "key": "D",
+        "text": "線性結構"
+      }
+    ],
+    "answer": "B",
+    "explanation": "DP 利用 $V(與)Q$ 函數的子問題結構進行規劃。",
+    "id": 78
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 29,
+    "difficulty": "中等",
+    "question": "如果 $H$（Horizon）是無限的，為了保證總回報 $G_t$ 收斂，$\\gamma$ 必須滿足？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$\\gamma > 1$"
+      },
+      {
+        "key": "B",
+        "text": "$\\gamma = 1$"
+      },
+      {
+        "key": "C",
+        "text": "$0 \\le \\gamma < 1$"
+      },
+      {
+        "key": "D",
+        "text": "$\\gamma = -1$"
+      }
+    ],
+    "answer": "C",
+    "explanation": "在無限地平線下，折扣因子須小於 1 以確保級數收斂。",
+    "id": 79
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 30,
+    "difficulty": "中等",
+    "question": "$n$-step Sarsa 更新目標與 1-step Sarsa 的主要不同在於？",
+    "options": [
+      {
+        "key": "A",
+        "text": "使用了神經網絡"
+      },
+      {
+        "key": "B",
+        "text": "累積了 $n(步的獎勵加上第)n$ 步的估計值"
+      },
+      {
+        "key": "C",
+        "text": "不需要獎勵 $R$"
+      },
+      {
+        "key": "D",
+        "text": "它是 Off-policy"
+      }
+    ],
+    "answer": "B",
+    "explanation": "$n$-step Q-Return 包含 $n$ 步獎勵的折扣和，以及最後的 bootstrap 項 $Q(S_{t+n})$。",
+    "id": 80
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 31,
+    "difficulty": "中等",
+    "question": "策略迭代中，若 `old-action == pi(s)` 對所有狀態都成立，表示？",
+    "options": [
+      {
+        "key": "A",
+        "text": "演算法出錯"
+      },
+      {
+        "key": "B",
+        "text": "策略已穩定 (Policy-stable) 並收斂至最優"
+      },
+      {
+        "key": "C",
+        "text": "需增加學習率"
+      },
+      {
+        "key": "D",
+        "text": "環境已改變"
+      }
+    ],
+    "answer": "B",
+    "explanation": "當動作不再改變，說明策略已穩定並逼近最優策略 $\\pi_*$。",
+    "id": 81
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 32,
+    "difficulty": "中等",
+    "question": "在 MDP 中，期望獎勵 $r(s', s, a)$ 的定義涉及哪些變數？",
+    "options": [
+      {
+        "key": "A",
+        "text": "只有當前狀態 $s$"
+      },
+      {
+        "key": "B",
+        "text": "下一狀態 $s'$、當前狀態 $s(與動作)a$"
+      },
+      {
+        "key": "C",
+        "text": "只有策略 $\\pi$"
+      },
+      {
+        "key": "D",
+        "text": "只有動作 $a$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "定義為 $\\mathbb{E}[R_{t+1}|S_{t+1}=s', S_t=s, A_t=a]$。",
+    "id": 82
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 33,
+    "difficulty": "中等",
+    "question": "DQL 使用 `Experience Replay` 的主要目的是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "增加計算難度"
+      },
+      {
+        "key": "B",
+        "text": "打破資料間的相關性並重複利用過去經驗訓練"
+      },
+      {
+        "key": "C",
+        "text": "減少記憶體消耗"
+      },
+      {
+        "key": "D",
+        "text": "強制代理人忘記過去"
+      }
+    ],
+    "answer": "B",
+    "explanation": "透過從歷史中取樣 minibatch 訓練，可穩定網絡更新。",
+    "id": 83
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 34,
+    "difficulty": "中等",
+    "question": "在時序差分學習中，$V(S_t)$ 的更新朝向哪個目標？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$G_t$"
+      },
+      {
+        "key": "B",
+        "text": "$R_{t+1} + \\gamma V(S_{t+1})$"
+      },
+      {
+        "key": "C",
+        "text": "$V(S_{t-1})$"
+      },
+      {
+        "key": "D",
+        "text": "$\\arg\\max_a Q(s, a)$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "TD 更新是朝向 TD 目標 $R_{t+1} + \\gamma V(S_{t+1})$。",
+    "id": 84
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 35,
+    "difficulty": "中等",
+    "question": "下列何者描述了最優策略 $\\pi_*$與最優價值函數$V_*$ 的關係？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V_*$ 總是等於 0"
+      },
+      {
+        "key": "B",
+        "text": "最優狀態價值等於從該狀態出發的最佳動作的期望回報"
+      },
+      {
+        "key": "C",
+        "text": "$V_*$與$\\pi_*$ 無關"
+      },
+      {
+        "key": "D",
+        "text": "$\\pi_*$ 總是隨機的"
+      }
+    ],
+    "answer": "B",
+    "explanation": "方程 8 表達了 $V_*(s) = max_a q_{\\pi*}(s, a)$。",
+    "id": 85
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 36,
+    "difficulty": "困難",
+    "question": "請推導 Bellman 方程中 $V_\\pi(s)$ 的全機率展開形式，下列何者正確？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V_\\pi(s) = \\sum_{a}\\pi(a|s)\\sum_{s',r}p(s',r|s,a)[r + \\gamma V_\\pi(s')]$"
+      },
+      {
+        "key": "B",
+        "text": "$V_\\pi(s) = \\sum_{a}\\pi(a|s)[R + \\gamma V_\\pi(s')]$"
+      },
+      {
+        "key": "C",
+        "text": "$V_\\pi(s) = max_a \\sum_{s'} p(s'|s,a)V_\\pi(s')$"
+      },
+      {
+        "key": "D",
+        "text": "$V_\\pi(s) = \\mathbb{E}[R_{t+1}]$"
+      }
+    ],
+    "answer": "A",
+    "explanation": "這是價值函數的完整貝爾曼方程展開。",
+    "id": 86
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 37,
+    "difficulty": "困難",
+    "question": "在策略改進 (Policy Improvement) 步驟中，新的策略 $\\pi(s)$ 是如何選取的？",
+    "options": [
+      {
+        "key": "A",
+        "text": "隨機選取"
+      },
+      {
+        "key": "B",
+        "text": "$argmax_a \\sum_{s', r} p(s', r|s, a) [r + \\gamma V(s')]$"
+      },
+      {
+        "key": "C",
+        "text": "選取價值最小的動作"
+      },
+      {
+        "key": "D",
+        "text": "保持與舊策略一致"
+      }
+    ],
+    "answer": "B",
+    "explanation": "策略改進透過對 $Q$ 值估計進行貪婪化操作。",
+    "id": 87
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 38,
+    "difficulty": "困難",
+    "question": "Forward View Sarsa($\\lambda$) 的權重項 $(1-\\lambda)\\lambda^{n-1}$ 作用為何？",
+    "options": [
+      {
+        "key": "A",
+        "text": "增加單步獎勵權重"
+      },
+      {
+        "key": "B",
+        "text": "對不同步數的 $n$-step 回報進行加權平均"
+      },
+      {
+        "key": "C",
+        "text": "作為神經網絡的激發函數"
+      },
+      {
+        "key": "D",
+        "text": "計算轉移機率"
+      }
+    ],
+    "answer": "B",
+    "explanation": "這是 $\\lambda$-return 的定義，整合了所有 $n$-step 的回報。",
+    "id": 88
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 39,
+    "difficulty": "困難",
+    "question": "DQL 的 Loss Function $L_i(\\theta_i)$ 中，為什麼 $\\theta_{i-1}$ 要加下標 $i-1$？",
+    "options": [
+      {
+        "key": "A",
+        "text": "代表它是當前正在優化的參數"
+      },
+      {
+        "key": "B",
+        "text": "代表它是固定住的「目標網路」參數，用以穩定訓練"
+      },
+      {
+        "key": "C",
+        "text": "代表它是第一層卷積核"
+      },
+      {
+        "key": "D",
+        "text": "代表它是過往所有權重的總和"
+      }
+    ],
+    "answer": "B",
+    "explanation": "為了計算目標值，通常會使用前一時刻或固定的網路參數 $\\theta_{i-1}$。",
+    "id": 89
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 40,
+    "difficulty": "困難",
+    "question": "價值迭代的更新規則 $V(s) \\leftarrow max_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V(s')]$ 實際上隱含了什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "一次策略評估"
+      },
+      {
+        "key": "B",
+        "text": "一次策略改進"
+      },
+      {
+        "key": "C",
+        "text": "在每一步評估後立即進行策略改進"
+      },
+      {
+        "key": "D",
+        "text": "忽略所有獎勵"
+      }
+    ],
+    "answer": "C",
+    "explanation": "價值迭代在更新價值時直接取 $max$，省略了顯式的策略步驟。",
+    "id": 90
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 41,
+    "difficulty": "困難",
+    "question": "在蒙地卡羅方法更新式 $V(S_t) \\leftarrow V(S_t) + \\alpha [G_t - V(S_t)]$ 中，$[G_t - V(S_t)]$ 被稱為什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "折扣因子"
+      },
+      {
+        "key": "B",
+        "text": "預測誤差 (Prediction Error) 或估計殘差"
+      },
+      {
+        "key": "C",
+        "text": "累積獎勵"
+      },
+      {
+        "key": "D",
+        "text": "轉移機率"
+      }
+    ],
+    "answer": "B",
+    "explanation": "這是當前觀測回報與原估計值的差距。",
+    "id": 91
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 42,
+    "difficulty": "困難",
+    "question": "Sarsa$$\n\\lambda\n$$\n的演算法實作中，更新$Q(s,a)$ 是在什麼時機？",
+    "options": [
+      {
+        "key": "A",
+        "text": "每個片段結束時"
+      },
+      {
+        "key": "B",
+        "text": "每一時間步，觀察到 $r, s'$並選取$a'$ 後"
+      },
+      {
+        "key": "C",
+        "text": "只有在到達目標時"
+      },
+      {
+        "key": "D",
+        "text": "隨機觸發"
+      }
+    ],
+    "answer": "B",
+    "explanation": "TD 方法（如 Sarsa）在每一步都會進行更新。",
+    "id": 92
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 43,
+    "difficulty": "困難",
+    "question": "在 DQL 演算法中，選擇動作時使用的 $\\epsilon$-greedy 策略具體指？",
+    "options": [
+      {
+        "key": "A",
+        "text": "以 $\\epsilon$ 機率選擇隨機動作，否則選擇最優動作"
+      },
+      {
+        "key": "B",
+        "text": "總是選擇獎勵最高的動作"
+      },
+      {
+        "key": "C",
+        "text": "隨機選取 50% 動作"
+      },
+      {
+        "key": "D",
+        "text": "只在開始訓練時隨機選取"
+      }
+    ],
+    "answer": "A",
+    "explanation": "以機率 $\\epsilon$ 進行隨機探索，否則選擇使 $Q$ 值最大的動作。",
+    "id": 93
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 44,
+    "difficulty": "困難",
+    "question": "DQL 損失函數中的預測項 (Prediction) 是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$r$"
+      },
+      {
+        "key": "B",
+        "text": "$Q(s, a; \\theta_i)$"
+      },
+      {
+        "key": "C",
+        "text": "$y_j^*$"
+      },
+      {
+        "key": "D",
+        "text": "$\\gamma$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "預測項是當前網路對狀態動作對的評分 $Q(s, a; \\theta_i)$。",
+    "id": 94
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 45,
+    "difficulty": "困難",
+    "question": "如果一個 MDP 的狀態轉移是確定的，則 $p(s'|s,a)$ 的取值只可能是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "0 或 1"
+      },
+      {
+        "key": "B",
+        "text": "任何 0 到 1 之間的實數"
+      },
+      {
+        "key": "C",
+        "text": "總是 0.5"
+      },
+      {
+        "key": "D",
+        "text": "無法計算"
+      }
+    ],
+    "answer": "A",
+    "explanation": "確定性系統中，給定 $(s,a)$只會有一種特定的$s'$，故機率非 0 即 1。",
+    "id": 95
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 46,
+    "difficulty": "困難",
+    "question": "$V_*(s) = max_{a \\in A(s)} q_{\\pi*}(s,a)$ 這一等式成立的前提是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "代理人採取隨機動作"
+      },
+      {
+        "key": "B",
+        "text": "代理人遵循最優策略"
+      },
+      {
+        "key": "C",
+        "text": "獎勵全部為正"
+      },
+      {
+        "key": "D",
+        "text": "環境是 Model-Free 的"
+      }
+    ],
+    "answer": "B",
+    "explanation": "最優策略下的價值必須等於該狀態下最佳動作的預期回報。",
+    "id": 96
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 47,
+    "difficulty": "困難",
+    "question": "在 DQL 中，若 $s'_j$ 是終止狀態（Terminal State），其目標值 $y_j$ 應設為？",
+    "options": [
+      {
+        "key": "A",
+        "text": "0"
+      },
+      {
+        "key": "B",
+        "text": "$r_j$"
+      },
+      {
+        "key": "C",
+        "text": "$r_j + \\gamma max Q$"
+      },
+      {
+        "key": "D",
+        "text": "$-1$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "根據 DQL 更新邏輯，若為終止狀態，回報僅為當前獎勵 $r_j$。",
+    "id": 97
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 48,
+    "difficulty": "困難",
+    "question": "貝爾曼方程展示了 $q_\\pi(s,a)$ 可以用 $V_\\pi(s')$ 來表示，其關係式為？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$q_\\pi(s,a) = \\sum_{s',r} p(s',r|s,a)[r + \\gamma V_\\pi(s')]$"
+      },
+      {
+        "key": "B",
+        "text": "$q_\\pi(s,a) = V_\\pi(s)$"
+      },
+      {
+        "key": "C",
+        "text": "$q_\\pi(s,a) = r + V_\\pi(s)$"
+      },
+      {
+        "key": "D",
+        "text": "$q_\\pi(s,a) = \\pi(a|s)V_\\pi(s)$"
+      }
+    ],
+    "answer": "A",
+    "explanation": "方程 10 描述了 $Q$ 函數與下一狀態價值函數的遞迴關係。",
+    "id": 98
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 49,
+    "difficulty": "困難",
+    "question": "蒙地卡羅方法為何不適用於非片段式 (Non-episodic) 的任務？",
+    "options": [
+      {
+        "key": "A",
+        "text": "因為它需要太多的記憶體"
+      },
+      {
+        "key": "B",
+        "text": "因為它需要等到片段結束獲得回報 $G_t$ 才能進行更新"
+      },
+      {
+        "key": "C",
+        "text": "因為它無法處理折扣因子"
+      },
+      {
+        "key": "D",
+        "text": "因為它需要環境模型"
+      }
+    ],
+    "answer": "B",
+    "explanation": "MC 必須生成完整片段 (Generate an episode) 才能獲得回報樣本。",
+    "id": 99
+  },
+  {
+    "source": "Gemini",
+    "source_question_no": 50,
+    "difficulty": "困難",
+    "question": "在 DQL 訓練中，從經驗回放池 $D$ 中取樣的對象是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "單一狀態 $s$"
+      },
+      {
+        "key": "B",
+        "text": "單一動作 $a$"
+      },
+      {
+        "key": "C",
+        "text": "轉換元組 $(s, a, r, s')$ (Transitions)"
+      },
+      {
+        "key": "D",
+        "text": "整個策略 $\\pi$"
+      }
+    ],
+    "answer": "C",
+    "explanation": "儲存並取樣的是 $(s, a, r, s')$ 轉換對。",
+    "id": 100
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 1,
+    "difficulty": "簡單",
+    "question": "在 Agent-Environment Interface 中，Agent 在時間步 $t$ 採取動作 $A_t$ 後，環境會回傳什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "下一狀態 $S_{t+1}$和策略$\\pi$"
+      },
+      {
+        "key": "B",
+        "text": "下一狀態 $S_{t+1}$和獎勵$R_{t+1}$"
+      },
+      {
+        "key": "C",
+        "text": "折扣因子 $\\gamma(和動作)A_{t+1}$"
+      },
+      {
+        "key": "D",
+        "text": "價值函數 $V(s)$和獎勵$R_{t+1}$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "根據 Agent-Environment Interface，Agent 在每個時間步 $t$ 觀察到狀態 $S_t$，並選擇動作 $A_t$，環境隨後回傳下一狀態 $S_{t+1}$ 與獎勵 $R_{t+1}$。",
+    "id": 101
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 2,
+    "difficulty": "簡單",
+    "question": "策略（Policy）$\\pi_t(s|a)$ 代表什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "在狀態 $s(下執行動作)a$ 的預期獎勵"
+      },
+      {
+        "key": "B",
+        "text": "在動作 $a(已知的情況下，狀態為)s$ 的機率"
+      },
+      {
+        "key": "C",
+        "text": "在狀態 $S_t = s(時選擇動作)A_t = a$ 的機率"
+      },
+      {
+        "key": "D",
+        "text": "在時間步 $t$ 採取所有動作的平均獎勵"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Policy 是從狀態到動作的映射，$\\pi_t(s|a)$ 表示在狀態 $S_t=s$ 時，選擇動作 $A_t=a$ 的機率。",
+    "id": 102
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 3,
+    "difficulty": "簡單",
+    "question": "總獎勵（Return）的公式 $G_t = \\sum_{k=0}^{H} \\gamma^k r_{t+k+1}$ 中，$\\gamma$ 代表什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "學習率（Learning Rate）"
+      },
+      {
+        "key": "B",
+        "text": "折扣因子（Discount Factor）"
+      },
+      {
+        "key": "C",
+        "text": "時間步長（Time Step）"
+      },
+      {
+        "key": "D",
+        "text": "水平線（Horizon）"
+      }
+    ],
+    "answer": "B",
+    "explanation": "$\\gamma$ 為折扣因子（Discount Factor），範圍通常為 $[0,1]$。它控制未來獎勵相對於即時獎勵的重要性。",
+    "id": 103
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 4,
+    "difficulty": "簡單",
+    "question": "MDP（Markov Decision Process）是由哪 5 個元素組成的元組？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$$\nS, A, P, R, \\alpha\n$$"
+      },
+      {
+        "key": "B",
+        "text": "$$\nS, A, Q, R, \\gamma\n$$"
+      },
+      {
+        "key": "C",
+        "text": "$$\nS, A, P, R, \\gamma\n$$"
+      },
+      {
+        "key": "D",
+        "text": "$$\nS, \\pi, P, V, \\gamma\n$$"
+      }
+    ],
+    "answer": "C",
+    "explanation": "MDP 是一個 5-tuple：$$(S, A, P, R, \\gamma)$$ 其中 $S$ 為狀態集合，$A$ 為動作集合，$P$ 為狀態轉移機率，$R$ 為獎勵函數，$\\gamma$ 為折扣因子。",
+    "id": 104
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 5,
+    "difficulty": "簡單",
+    "question": "狀態轉移機率（State Transition Probability）的正確表示為何？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$p(s'|s, a) = Pr\\{S_{t+1} = s' | S_t = s\\}$"
+      },
+      {
+        "key": "B",
+        "text": "$p(s'|s, a) = Pr\\{S_{t+1} = s' | S_t = s, A_t = a\\}$"
+      },
+      {
+        "key": "C",
+        "text": "$p(s'|s, a) = Pr\\{A_t = a | S_t = s, S_{t+1} = s'\\}$"
+      },
+      {
+        "key": "D",
+        "text": "$p(s'|s, a) = E[R_{t+1} | S_t = s, A_t = a]$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "狀態轉移機率表示在狀態 $s$ 執行動作 $a$ 後，轉移到狀態 $s'$ 的機率，也就是 $p(s'|s,a)$。",
+    "id": 105
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 6,
+    "difficulty": "簡單",
+    "question": "價值函數 $V_\\pi(s)$ 的非正式說明是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "在狀態 $s$ 執行所有可能動作的最大即時獎勵"
+      },
+      {
+        "key": "B",
+        "text": "從狀態 $s(出發並遵循策略)\\pi$ 的預期累積折扣獎勵"
+      },
+      {
+        "key": "C",
+        "text": "在策略 $\\pi$ 下，執行最優動作的機率"
+      },
+      {
+        "key": "D",
+        "text": "狀態 $s(和動作)a$ 的聯合機率分布"
+      }
+    ],
+    "answer": "B",
+    "explanation": "$V_\\pi(s)=E[G_t|S_t=s]$，代表從狀態 $s$ 出發並遵循策略 $\\pi$ 的預期累積折扣獎勵。",
+    "id": 106
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 7,
+    "difficulty": "簡單",
+    "question": "最優價值函數 $V^*(s)$ 的定義是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V^*(s) = \\min_\\pi V_\\pi(s)$"
+      },
+      {
+        "key": "B",
+        "text": "$V^*(s) = E_\\pi[G_t | S_t = s]$"
+      },
+      {
+        "key": "C",
+        "text": "$V^*(s) = \\max_\\pi V_\\pi(s)$"
+      },
+      {
+        "key": "D",
+        "text": "$V^*(s) = \\max_a q_\\pi(s, a)$"
+      }
+    ],
+    "answer": "C",
+    "explanation": "最優價值函數 $V^*(s)$定義為所有可能策略中，使$V_\\pi(s)$最大的那個值，即$V^*(s) = \\max_\\pi V_\\pi(s)$。選項 D 雖然也正確（是另一個等價表示），但最直接的定義是 C。",
+    "id": 107
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 8,
+    "difficulty": "簡單",
+    "question": "Q 函數（Action-Value Function）$q_\\pi(s, a)$ 代表什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "在狀態 $s(下選擇動作)a$ 的機率"
+      },
+      {
+        "key": "B",
+        "text": "在狀態 $s(執行動作)a$，並遵循策略$\\pi$ 的預期回報"
+      },
+      {
+        "key": "C",
+        "text": "在最優策略下，狀態 $s$ 的最大價值"
+      },
+      {
+        "key": "D",
+        "text": "在狀態 $s(選擇動作)a$ 後的即時獎勵"
+      }
+    ],
+    "answer": "B",
+    "explanation": "$q_\\pi(s,a)=E_\\pi[G_t|S_t=s,A_t=a]$，表示在狀態 $s$ 執行動作 $a$，之後遵循策略 $\\pi$ 時的預期回報。",
+    "id": 108
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 9,
+    "difficulty": "簡單",
+    "question": "最優 Q 函數 $q^*(s, a)$與最優價值函數$V^*(s)$ 的關係為何？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V^*(s) = \\sum_{a \\in A(s)} q^*(s, a)$"
+      },
+      {
+        "key": "B",
+        "text": "$V^*(s) = \\max_{a \\in A(s)} q_{\\pi^*}(s, a)$"
+      },
+      {
+        "key": "C",
+        "text": "$V^*(s) = \\min_{a \\in A(s)} q^*(s, a)$"
+      },
+      {
+        "key": "D",
+        "text": "$V^*(s) = E[q^*(s, a)]$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "根據教材公式 (8)：$V^*(s) = \\max_{a \\in A(s)} q_{\\pi^*}(s, a)$。直觀上，最優策略下某狀態的價值，等於從該狀態出發選擇最好動作的 Q 值。這個關係連結了狀態價值函數與動作-價值函數。",
+    "id": 109
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 10,
+    "difficulty": "簡單",
+    "question": "在 Policy Iteration 的初始化步驟中，$\\Delta$ 被初始化為何值？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$+\\infty$"
+      },
+      {
+        "key": "B",
+        "text": "$\\theta$（一個小正數）"
+      },
+      {
+        "key": "C",
+        "text": "$0$"
+      },
+      {
+        "key": "D",
+        "text": "$-\\infty$"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Policy Iteration 初始化時會令 $\\Delta \\leftarrow 0$，用來追蹤 value function 的最大更新量。",
+    "id": 110
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 11,
+    "difficulty": "簡單",
+    "question": "Policy Evaluation 的迴圈終止條件是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$\\Delta < \\theta(（)\\theta$ 為一個小正數）"
+      },
+      {
+        "key": "B",
+        "text": "$\\Delta \\geq \\theta$"
+      },
+      {
+        "key": "C",
+        "text": "$\\Delta = 0$"
+      },
+      {
+        "key": "D",
+        "text": "完成所有狀態的一次掃描後即終止"
+      }
+    ],
+    "answer": "A",
+    "explanation": "Policy Evaluation 會持續進行，直到 $\\Delta < \\theta$ 為止。",
+    "id": 111
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 12,
+    "difficulty": "簡單",
+    "question": "Monte Carlo 方法屬於哪一類別？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Model-Based 方法"
+      },
+      {
+        "key": "B",
+        "text": "Model-Free 方法"
+      },
+      {
+        "key": "C",
+        "text": "Dynamic Programming 方法"
+      },
+      {
+        "key": "D",
+        "text": "Exact Planning 方法"
+      }
+    ],
+    "answer": "B",
+    "explanation": "教材明確指出：「Monte Carlo (MC) is a Model Free method, It does not require complete knowledge of the environment.」它不需要知道環境的轉移機率 $p(s'|s,a)$，而是透過實際與環境互動的樣本來估計 Q 值。",
+    "id": 112
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 13,
+    "difficulty": "簡單",
+    "question": "Monte Carlo 方法的基本概念是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "利用 Bellman 方程式遞迴更新價值函數"
+      },
+      {
+        "key": "B",
+        "text": "對每個狀態-動作對的樣本回報取平均"
+      },
+      {
+        "key": "C",
+        "text": "使用深度神經網路逼近 Q 函數"
+      },
+      {
+        "key": "D",
+        "text": "對每個狀態直接求解線性方程組"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Monte Carlo 方法是「averaging sample returns for each state-action pair」，透過大量的 Episode 樣本，對 $Q(s, a)$ 進行估計。不需要環境模型，只需真實或模擬的交互經驗。",
+    "id": 113
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 14,
+    "difficulty": "簡單",
+    "question": "在非穩態（Non-stationary）問題中，Monte Carlo 對 $V$ 的更新公式是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V$S_t$\\leftarrow V$S_t$+ \\gamma[G_t - V$S_t$]$"
+      },
+      {
+        "key": "B",
+        "text": "$V$S_t$\\leftarrow \\alpha \\cdot G_t$"
+      },
+      {
+        "key": "C",
+        "text": "$V$S_t$\\leftarrow V$S_t$+ \\alpha[G_t - V$S_t$]$"
+      },
+      {
+        "key": "D",
+        "text": "$V$S_t$\\leftarrow \\max_a Q$S_t, a$$"
+      }
+    ],
+    "answer": "C",
+    "explanation": "非穩態問題中的 Monte Carlo 更新為 $V(S_t) \\leftarrow V(S_t) + \\alpha [G_t - V(S_t)]$，其中 $\\alpha$ 控制對新資訊的信任程度。",
+    "id": 114
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 15,
+    "difficulty": "簡單",
+    "question": "SARSA 的名稱由來是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "State-Action-Reward-State-Agent"
+      },
+      {
+        "key": "B",
+        "text": "State-Action-Reward-State-Action"
+      },
+      {
+        "key": "C",
+        "text": "Sequence-Action-Return-State-Action"
+      },
+      {
+        "key": "D",
+        "text": "State-Algorithm-Reward-Sampling-Action"
+      }
+    ],
+    "answer": "B",
+    "explanation": "SARSA 全名是「State-Action-Reward-State-Action」，名稱反映了其更新規則所用到的五個元素：$$\nS_t, A_t, R_{t+1}, S_{t+1}, A_{t+1}\n$$\n，即「當前狀態→動作→獎勵→下一狀態→下一動作」的序列。",
+    "id": 115
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 16,
+    "difficulty": "簡單",
+    "question": "SARSA 是 On-policy 還是 Off-policy 方法？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Off-policy"
+      },
+      {
+        "key": "B",
+        "text": "On-policy"
+      },
+      {
+        "key": "C",
+        "text": "兩者都是"
+      },
+      {
+        "key": "D",
+        "text": "取決於 $\\epsilon$ 的值"
+      }
+    ],
+    "answer": "B",
+    "explanation": "SARSA 是 on-policy 方法，因為更新時使用的 $a_{t+1}$ 是策略 $\\pi$ 實際選出的下一個動作。",
+    "id": 116
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 17,
+    "difficulty": "簡單",
+    "question": "Temporal Difference（TD）方法的核心優點是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "必須等待完整 Episode 結束才能更新"
+      },
+      {
+        "key": "B",
+        "text": "可直接從原始經驗學習，不需環境模型"
+      },
+      {
+        "key": "C",
+        "text": "能保證收斂到全局最優解"
+      },
+      {
+        "key": "D",
+        "text": "每次更新都需要完整的狀態轉移矩陣"
+      }
+    ],
+    "answer": "B",
+    "explanation": "「TD methods learn directly from raw experience without a model of the environment's dynamics.」TD 方法不需要環境的完整知識，也不需要等待 Episode 結束（不像 Monte Carlo），可以進行 online、incremental 更新。",
+    "id": 117
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 18,
+    "difficulty": "簡單",
+    "question": "TD 方法的 Value Function 更新公式是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V$S_t$\\leftarrow V$S_t$+ \\alpha[G_t - V$S_t$]$"
+      },
+      {
+        "key": "B",
+        "text": "$V$S_t$\\leftarrow V$S_t$+ \\alpha[R_{t+1} + \\gamma V$S_{t+1}$- V$S_t$]$"
+      },
+      {
+        "key": "C",
+        "text": "$V$S_t$\\leftarrow R_{t+1} + \\gamma V$S_{t+1}$$"
+      },
+      {
+        "key": "D",
+        "text": "$V$S_t$\\leftarrow \\max_a Q$S_t, a$$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "TD 更新公式為 $V(S_t) \\leftarrow V(S_t) + \\alpha [R_{t+1} + \\gamma V(S_{t+1}) - V(S_t)]$。",
+    "id": 118
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 19,
+    "difficulty": "中等",
+    "question": "Bellman 方程式（Value Function 版本）的正確展開形式是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V_\\pi(s) = \\sum_a \\pi(a|s) \\sum_{s',r} p(s',r|s,a)[r + V_\\pi(s')]$"
+      },
+      {
+        "key": "B",
+        "text": "$V_\\pi(s) = \\sum_a \\pi(a|s) \\sum_{s',r} p(s',r|s,a)[r + \\gamma V_\\pi(s')]$"
+      },
+      {
+        "key": "C",
+        "text": "$V_\\pi(s) = \\max_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V_\\pi(s')]$"
+      },
+      {
+        "key": "D",
+        "text": "$V_\\pi(s) = \\sum_{s',r} p(s',r|s,a)[r + \\gamma V_\\pi(s')]$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Bellman Equation（Value Function）為 $$V_\\pi(s)=\\sum_a \\pi(a|s)\\sum_{s',r}p(s',r|s,a)[r+\\gamma V_\\pi(s')]$$ 其中要對所有動作依照 $\\pi(a|s)$ 加權。",
+    "id": 119
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 20,
+    "difficulty": "中等",
+    "question": "Bellman 方程式（Q Function 版本）展開後等於？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$q_\\pi(s,a) = \\sum_{s',r} p(s',r|s,a)[r + \\gamma \\max_{a'} q_\\pi(s',a')]$"
+      },
+      {
+        "key": "B",
+        "text": "$q_\\pi(s,a) = \\sum_{s',r} p(s',r|s,a)[r + \\gamma V_\\pi(s')]$"
+      },
+      {
+        "key": "C",
+        "text": "$q_\\pi(s,a) = \\pi(a|s) \\sum_{s',r} p(s',r|s,a)[r + \\gamma V_\\pi(s')]$"
+      },
+      {
+        "key": "D",
+        "text": "$q_\\pi(s,a) = \\sum_a \\pi(a|s)[r + \\gamma V_\\pi(s')]$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Q Function 的 Bellman 方程式為 $$q_\\pi(s,a)=\\sum_{s',r}p(s',r|s,a)[r+\\gamma V_\\pi(s')]$$，由於動作 $a$ 已經固定，因此不需要再對 $\\pi(a|s)$ 加權。",
+    "id": 120
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 21,
+    "difficulty": "中等",
+    "question": "Policy Improvement 步驟中，如何更新策略 $\\pi(s)$？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$\\pi(s) \\leftarrow \\arg\\min_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V(s')]$"
+      },
+      {
+        "key": "B",
+        "text": "$\\pi(s) \\leftarrow \\arg\\max_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V(s')]$"
+      },
+      {
+        "key": "C",
+        "text": "$\\pi(s) \\leftarrow \\arg\\max_a Q(s, a) \\cdot \\pi(a|s)$"
+      },
+      {
+        "key": "D",
+        "text": "$\\pi(s) \\leftarrow \\arg\\max_a V(s')$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Policy Improvement 對每個狀態 $s(，選擇能最大化期望回報的動作：)$\\pi(s) \\leftarrow \\arg\\max_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V(s')]$$\n這是 Greedy 策略改進，確保新策略不劣於舊策略（Policy Improvement Theorem）。",
+    "id": 121
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 22,
+    "difficulty": "中等",
+    "question": "Policy Iteration 的終止條件是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V(s)$ 對所有狀態完全不再改變"
+      },
+      {
+        "key": "B",
+        "text": "Policy Evaluation 的迴圈達到最大迭代次數"
+      },
+      {
+        "key": "C",
+        "text": "Policy Improvement 後，`policy-stable = true`（新舊策略完全相同）"
+      },
+      {
+        "key": "D",
+        "text": "折扣獎勵總和超過某個閾值"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Policy Iteration 在 Policy Improvement 步驟後，檢查 `policy-stable` 旗標。若所有狀態 $s(的 `old-action = π$s)`（即策略沒有改變），則 `policy-stable = true`，演算法終止並輸出$V \\approx V^*$、$\\pi \\approx \\pi^*$；否則返回 Policy Evaluation 繼續迭代。",
+    "id": 122
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 23,
+    "difficulty": "中等",
+    "question": "Value Iteration 與 Policy Iteration 的主要差異是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Value Iteration 需要完整的環境模型，Policy Iteration 不需要"
+      },
+      {
+        "key": "B",
+        "text": "Value Iteration 將 Policy Improvement 和截斷的 Policy Evaluation 合併為一步"
+      },
+      {
+        "key": "C",
+        "text": "Value Iteration 使用 Q 函數更新，Policy Iteration 使用 V 函數更新"
+      },
+      {
+        "key": "D",
+        "text": "Policy Iteration 每次更新只掃描一個狀態，Value Iteration 掃描所有狀態"
+      }
+    ],
+    "answer": "B",
+    "explanation": "教材指出：「We can avoid to wait until V(s) has converged and instead do policy improvement and truncated policy evaluation step in one operation.」Value Iteration 在每次掃描時直接取 max（Greedy），相當於只做一步 Policy Evaluation 就立即 Improve，效率更高，不需等待完整收斂。",
+    "id": 123
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 24,
+    "difficulty": "中等",
+    "question": "Value Iteration 的 $V(s)$ 更新公式是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V(s) \\leftarrow \\sum_a \\pi(a|s) \\sum_{s',r} p(s',r|s,a)[r + \\gamma V(s')]$"
+      },
+      {
+        "key": "B",
+        "text": "$V(s) \\leftarrow \\max_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V(s')]$"
+      },
+      {
+        "key": "C",
+        "text": "$V(s) \\leftarrow \\arg\\max_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V(s')]$"
+      },
+      {
+        "key": "D",
+        "text": "$V(s) \\leftarrow R_{t+1} + \\gamma V$S_{t+1}$$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Value Iteration 的更新式為 $$V(s) \\leftarrow \\max_a \\sum_{s',r} p(s',r|s,a)[r+\\gamma V(s')]$$，它直接取最大值，因此同時帶有 policy improvement 的效果。",
+    "id": 124
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 25,
+    "difficulty": "中等",
+    "question": "SARSA 的更新規則是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$Q$s_t, a_t$\\leftarrow Q$s_t, a_t$+ \\alpha[r_t + \\gamma \\max_{a'} Q$s_{t+1}, a'$- Q$s_t, a_t$]$"
+      },
+      {
+        "key": "B",
+        "text": "$Q$s_t, a_t$\\leftarrow Q$s_t, a_t$+ \\alpha[r_t + \\gamma Q$s_{t+1}, a_{t+1}$- Q$s_t, a_t$]$"
+      },
+      {
+        "key": "C",
+        "text": "$Q$s_t, a_t$\\leftarrow r_t + \\gamma Q$s_{t+1}, a_{t+1}$$"
+      },
+      {
+        "key": "D",
+        "text": "$Q$s_t, a_t$\\leftarrow Q$s_t, a_t$+ \\alpha[G_t - Q$s_t, a_t$]$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "SARSA 的更新規則為 $Q(s_t,a_t) \\leftarrow Q(s_t,a_t)+\\alpha[r_t+\\gamma Q(s_{t+1},a_{t+1})-Q(s_t,a_t)]$，關鍵是使用實際執行的下一個動作 $a_{t+1}$。",
+    "id": 125
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 26,
+    "difficulty": "中等",
+    "question": "Q-Learning 與 SARSA 最根本的差異是什麼？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Q-Learning 使用完整回報 $G_t$，SARSA 使用單步 TD 估計"
+      },
+      {
+        "key": "B",
+        "text": "Q-Learning 更新時使用 $\\max_{a'} Q(s', a')$，SARSA 使用實際執行的 $Q(s', a')$"
+      },
+      {
+        "key": "C",
+        "text": "Q-Learning 是 on-policy，SARSA 是 off-policy"
+      },
+      {
+        "key": "D",
+        "text": "Q-Learning 需要環境模型，SARSA 不需要"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Q-Learning 使用 $\\max_{a'}Q(s',a')$，與當前策略無關，因此是 off-policy；SARSA 使用實際選出的 $a'$，因此是 on-policy。",
+    "id": 126
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 27,
+    "difficulty": "中等",
+    "question": "n-step SARSA 的 n-step Q-Return $q_t^{(n)}$ 定義為？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$q_t^{(n)} = R_{t+1} + \\gamma R_{t+2} + \\ldots + \\gamma^{n-1} R_{t+n} + \\gamma^n Q$S_{t+n}$$"
+      },
+      {
+        "key": "B",
+        "text": "$q_t^{(n)} = \\sum_{k=0}^{n} \\gamma^k R_{t+k+1}$"
+      },
+      {
+        "key": "C",
+        "text": "$q_t^{(n)} = R_{t+1} + \\gamma^n Q$S_{t+n}$$"
+      },
+      {
+        "key": "D",
+        "text": "$q_t^{(n)} = \\gamma^n G_t$"
+      }
+    ],
+    "answer": "A",
+    "explanation": "n-step Q-Return 的定義為 $q_t^{(n)} = R_{t+1}+\\gamma R_{t+2}+\\cdots+\\gamma^{n-1}R_{t+n}+\\gamma^nQ(S_{t+n})$。",
+    "id": 127
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 28,
+    "difficulty": "中等",
+    "question": "Forward View Sarsa($\\lambda$) 的 $q_t^\\lambda$ 定義是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$q_t^\\lambda = \\lambda \\sum_{n=1}^{\\infty} (1-\\lambda)^{n-1} q_t^{(n)}$"
+      },
+      {
+        "key": "B",
+        "text": "$q_t^\\lambda = (1-\\lambda) \\sum_{n=1}^{\\infty} \\lambda^{n-1} q_t^{(n)}$"
+      },
+      {
+        "key": "C",
+        "text": "$q_t^\\lambda = \\sum_{n=1}^{\\infty} \\lambda^n q_t^{(n)}$"
+      },
+      {
+        "key": "D",
+        "text": "$q_t^\\lambda = (1-\\lambda) q_t^{(1)} + \\lambda q_t^{(\\infty)}$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Forward View Sarsa($\\lambda$) 的 $\\lambda$-return 為 $q_t^\\lambda=(1-\\lambda)\\sum_{n=1}^{\\infty}\\lambda^{n-1}q_t^{(n)}$。",
+    "id": 128
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 29,
+    "difficulty": "中等",
+    "question": "Deep Q-Learning（DQN）的損失函數 $L_i(\\theta_i)$ 中，Target 的計算方式是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$r + \\gamma \\max_a Q(s', a'; \\theta_i)$（使用當前網路參數）"
+      },
+      {
+        "key": "B",
+        "text": "$r + \\gamma \\max_a Q(s', a'; \\theta_{i-1})$（使用前一版網路參數）"
+      },
+      {
+        "key": "C",
+        "text": "$r + \\gamma \\sum_a \\pi(a|s') Q(s', a'; \\theta_{i-1})$"
+      },
+      {
+        "key": "D",
+        "text": "$G_t$（完整的 Monte Carlo 回報）"
+      }
+    ],
+    "answer": "B",
+    "explanation": "DQN 的 loss 中，target 會使用 $r + \\gamma \\max_{a'} Q(s', a'; \\theta_{i-1})$，也就是上一版或 target network 的估計。",
+    "id": 129
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 30,
+    "difficulty": "中等",
+    "question": "DQN 中「Experience Replay」（$U(D)$）的主要用途是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "增加 Q 函數的更新頻率"
+      },
+      {
+        "key": "B",
+        "text": "打破訓練樣本之間的時序相關性，提升訓練穩定性"
+      },
+      {
+        "key": "C",
+        "text": "確保每個狀態至少被訪問一次"
+      },
+      {
+        "key": "D",
+        "text": "取代神經網路的反向傳播算法"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Experience Replay 會把 transition $(s,a,r,s')$ 存入 replay memory $D$，訓練時再從中隨機取樣 minibatch。",
+    "id": 130
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 31,
+    "difficulty": "中等",
+    "question": "在 DQN 演算法中，$\\epsilon$-greedy 策略的作用是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "確保 Q 網路的梯度更新穩定"
+      },
+      {
+        "key": "B",
+        "text": "以機率 $\\epsilon(隨機選動作、以機率)1-\\epsilon$ 選 greedy 動作，平衡探索與利用"
+      },
+      {
+        "key": "C",
+        "text": "當 Q 值相同時，隨機選擇動作"
+      },
+      {
+        "key": "D",
+        "text": "決定是否要將 transition 存入 replay memory"
+      }
+    ],
+    "answer": "B",
+    "explanation": "$\\epsilon$-greedy 表示以機率 $\\epsilon$ 隨機選動作，以機率 $1-\\epsilon$ 選擇使 $Q(s,a;\\theta)$ 最大的動作。",
+    "id": 131
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 32,
+    "difficulty": "中等",
+    "question": "在 Policy Iteration 的 Policy Evaluation 步驟中，$V(s)$ 的更新公式是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$V(s) \\leftarrow \\max_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V(s')]$"
+      },
+      {
+        "key": "B",
+        "text": "$V(s) \\leftarrow \\sum_a \\pi(a|s) \\sum_{s',r} p(s',r|s,a)[r + \\gamma V(s')]$"
+      },
+      {
+        "key": "C",
+        "text": "$V(s) \\leftarrow R_{t+1} + \\gamma V$S_{t+1}$$"
+      },
+      {
+        "key": "D",
+        "text": "$V(s) \\leftarrow \\arg\\max_a Q(s, a)$"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Policy Evaluation 在固定策略 $\\pi$ 下使用 Bellman expectation equation 來更新 $V(s)$。",
+    "id": 132
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 33,
+    "difficulty": "中等",
+    "question": "折扣因子 $\\gamma = 0$ 時，Agent 的行為特性是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Agent 只考慮無限遠的未來獎勵"
+      },
+      {
+        "key": "B",
+        "text": "Agent 只考慮即時獎勵 $R_{t+1}$，完全不關心未來"
+      },
+      {
+        "key": "C",
+        "text": "Agent 平均考慮所有未來獎勵"
+      },
+      {
+        "key": "D",
+        "text": "演算法無法收斂"
+      }
+    ],
+    "answer": "B",
+    "explanation": "當 $\\gamma = 0$，$G_t = \\sum_{k=0}^H \\gamma^k r_{t+k+1} = r_{t+1}$，即總回報只等於即時獎勵，未來的獎勵全部被折扣到 0。Agent 變得完全「短視」（myopic），只最大化眼前的獎勵。當 $\\gamma \\to 1$，Agent 則越來越重視長期回報。",
+    "id": 133
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 34,
+    "difficulty": "中等",
+    "question": "Sarsa($\\lambda$) 演算法（Algorithm 4）中，使用的策略是哪種？",
+    "options": [
+      {
+        "key": "A",
+        "text": "純 Greedy 策略"
+      },
+      {
+        "key": "B",
+        "text": "Softmax 策略"
+      },
+      {
+        "key": "C",
+        "text": "$\\epsilon$-greedy 策略"
+      },
+      {
+        "key": "D",
+        "text": "隨機均勻策略"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Sarsa($\\lambda$) 演算法中常用由 Q 導出的 $\\epsilon$-greedy 策略。",
+    "id": 134
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 35,
+    "difficulty": "中等",
+    "question": "在 Monte Carlo First-visit 演算法中，如何計算 $Q(s, a)$？",
+    "options": [
+      {
+        "key": "A",
+        "text": "使用 Bellman 方程式遞迴計算"
+      },
+      {
+        "key": "B",
+        "text": "取每個 episode 中 $(s, a)$ 首次出現後的回報，對所有 episode 平均"
+      },
+      {
+        "key": "C",
+        "text": "取每個 episode 中 $(s, a)$ 所有出現後的回報之最大值"
+      },
+      {
+        "key": "D",
+        "text": "使用 TD 誤差進行增量更新"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Monte Carlo First-visit 會取每個 episode 中 $(s,a)$ 第一次出現後的 return $G$，再對 $\\mathrm{Returns}(s,a)$ 做平均來估計 $Q(s,a)$。",
+    "id": 135
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 36,
+    "difficulty": "中等",
+    "question": "為什麼 Dynamic Programming 方法能找到最優策略？",
+    "options": [
+      {
+        "key": "A",
+        "text": "因為它使用神經網路進行函數逼近"
+      },
+      {
+        "key": "B",
+        "text": "因為它利用 V 和 Q 函數的子問題結構（Subproblem Structure）"
+      },
+      {
+        "key": "C",
+        "text": "因為它不需要任何環境知識"
+      },
+      {
+        "key": "D",
+        "text": "因為它透過隨機探索所有可能路徑"
+      }
+    ],
+    "answer": "B",
+    "explanation": "教材指出：「Taking advantages of the subproblem structure of the V and Q function we can find the optimal policy by just planning.」Bellman 方程式揭示了 RL 問題的最優子結構（Optimal Substructure），大問題的解可以分解為子問題，這是 DP 能有效求解的關鍵。",
+    "id": 136
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 37,
+    "difficulty": "中等",
+    "question": "下列關於 Monte Carlo 與 TD 方法的比較，何者正確？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Monte Carlo 可以 online 更新（每步更新），TD 需要等 episode 結束"
+      },
+      {
+        "key": "B",
+        "text": "TD 可以 online 更新，Monte Carlo 需要等 episode 結束後才能計算回報"
+      },
+      {
+        "key": "C",
+        "text": "兩者都需要等 episode 結束才能更新"
+      },
+      {
+        "key": "D",
+        "text": "兩者都能在每一步更新，沒有差異"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Monte Carlo 需要等完整 episode 才能得到 $G_t$；TD 則使用 $R_{t+1}+\\gamma V(S_{t+1})$，因此可以每一步即時更新。",
+    "id": 137
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 38,
+    "difficulty": "中等",
+    "question": "在 DQN 中，Terminal State 的 $y_j$ 如何設定？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$y_j = r_j + \\gamma \\max_{a'} Q(s_j', a'; \\theta)$"
+      },
+      {
+        "key": "B",
+        "text": "$y_j = \\gamma \\max_{a'} Q(s_j', a'; \\theta)$"
+      },
+      {
+        "key": "C",
+        "text": "$y_j = r_j$"
+      },
+      {
+        "key": "D",
+        "text": "$y_j = 0$"
+      }
+    ],
+    "answer": "C",
+    "explanation": "若 $s'_j$ 是 terminal state，則 DQN 的目標值直接設為 $y_j = r_j$。",
+    "id": 138
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 39,
+    "difficulty": "困難",
+    "question": "Bellman Optimality Equation 隱含了什麼重要性質，使得 DP 可以高效求解 RL 問題？",
+    "options": [
+      {
+        "key": "A",
+        "text": "RL 問題可以轉化為線性規劃問題"
+      },
+      {
+        "key": "B",
+        "text": "最優 Value Function 滿足遞迴關係，具有 Optimal Substructure 和 Overlapping Subproblems"
+      },
+      {
+        "key": "C",
+        "text": "狀態空間可以被壓縮為多項式大小"
+      },
+      {
+        "key": "D",
+        "text": "環境的隨機性可以被完全消除"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Bellman Optimality Equation $V^*(s) = \\max_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V^*(s')]$具有兩個關鍵性質：$1) **Optimal Substructure**：最優策略的子策略也是最優的；(2$**Overlapping Subproblems**：不同狀態的子問題相互重疊（$V^*(s')$ 可被重複使用）。這兩個性質正是 DP 能夠高效求解的充要條件。",
+    "id": 139
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 40,
+    "difficulty": "困難",
+    "question": "比較 Policy Iteration 和 Value Iteration 的計算複雜度，哪個敘述最準確？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Policy Iteration 每次迭代更快，但需要更多次迭代才能收斂"
+      },
+      {
+        "key": "B",
+        "text": "Value Iteration 每次迭代更快（每步直接取 max），但兩者最終迭代次數相當"
+      },
+      {
+        "key": "C",
+        "text": "Value Iteration 每次迭代需要更多計算，但通常收斂所需的外層迭代次數較少"
+      },
+      {
+        "key": "D",
+        "text": "Policy Iteration 通常比 Value Iteration 在更少的迭代次數內收斂，儘管每次迭代更昂貴"
+      }
+    ],
+    "answer": "D",
+    "explanation": "Policy Iteration 每次外層迭代包含完整的 Policy Evaluation（需多次掃描直到收斂）+ Policy Improvement，計算量大；但由於每次都做完整評估，策略改進更「精準」，通常外層迭代次數很少。Value Iteration 每次只做一步截斷評估（更快），但需要更多外層迭代才能收斂。兩者各有優劣，在實踐中 Policy Iteration 常常用更少次（但更昂貴的）迭代收斂。",
+    "id": 140
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 41,
+    "difficulty": "困難",
+    "question": "在 Sarsa($\\lambda$) 中，$\\lambda$ 的值如何影響算法行為？請分析 $\\lambda = 0$ 和 $\\lambda = 1$ 的極端情況。",
+    "options": [
+      {
+        "key": "A",
+        "text": "$\\lambda = 0$ 等於 TD(0)（一步 SARSA），$\\lambda = 1$ 等於 Monte Carlo"
+      },
+      {
+        "key": "B",
+        "text": "$\\lambda = 0$ 等於 Monte Carlo，$\\lambda = 1$ 等於 TD(0)"
+      },
+      {
+        "key": "C",
+        "text": "$\\lambda = 0$ 完全不更新 Q 函數，$\\lambda = 1$ 取所有 n-step 的平均"
+      },
+      {
+        "key": "D",
+        "text": "$\\lambda$ 只影響學習率，不影響 n-step 範圍"
+      }
+    ],
+    "answer": "A",
+    "explanation": "分析 Forward View Sarsa($\\lambda$)：\n$$\nq_t^\\lambda = (1-\\lambda) \\sum_{n=1}^{\\infty} \\lambda^{n-1} q_t^{(n)}\n$$\n- **$\\lambda = 0$**：$q_t^\\lambda = q_t^{(1)}$，也就是只有 1-step return，退化為 TD(0)，即普通 SARSA。\n- **$\\lambda = 1$**：在有限 episode 中可視為完整的 Monte Carlo return。\n- 中間值的 $\\lambda$ 會在 TD 和 MC 之間做插值。",
+    "id": 141
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 42,
+    "difficulty": "困難",
+    "question": "為什麼 DQN 使用過去的參數 $\\theta_{i-1}$ 作為 Target，而不是當前參數 $\\theta_i$？",
+    "options": [
+      {
+        "key": "A",
+        "text": "降低計算複雜度，避免每步都需要更新 Target"
+      },
+      {
+        "key": "B",
+        "text": "避免 Prediction 和 Target 同時變動導致訓練不穩定（moving target 問題）"
+      },
+      {
+        "key": "C",
+        "text": "因為 $\\theta_{i-1}$ 的準確度更高"
+      },
+      {
+        "key": "D",
+        "text": "使損失函數變成凸函數，確保梯度下降收斂"
+      }
+    ],
+    "answer": "B",
+    "explanation": "若 Target 和 Prediction 使用相同參數，更新 $\\theta$ 時會同時改變 Target 值，造成 moving target 問題，讓訓練非常不穩定。DQN 使用固定一段時間的 $\\theta_{i-1}$ 作為 Target，可讓學習訊號更穩定。",
+    "id": 142
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 43,
+    "difficulty": "困難",
+    "question": "下列哪個情況下，Bellman Equation 的遞迴展開會出現問題？",
+    "options": [
+      {
+        "key": "A",
+        "text": "當折扣因子 $\\gamma = 1$且 Horizon$H = \\infty$（無限水平、無折扣的 continuing tasks）"
+      },
+      {
+        "key": "B",
+        "text": "當狀態空間 $|S|$ 很大時"
+      },
+      {
+        "key": "C",
+        "text": "當動作空間是連續的"
+      },
+      {
+        "key": "D",
+        "text": "當獎勵函數是隨機的"
+      }
+    ],
+    "answer": "A",
+    "explanation": "當 $\\gamma = 1$ 且 $H = \\infty$ 時，$G_t = \\sum_{k=0}^{\\infty} r_{t+k+1}$ 可能發散。Bellman Equation 的收斂性依賴 $\\gamma < 1$ 或有限 horizon $H < \\infty$。當 $\\gamma < 1$ 時，幾何級數 $\\sum_{k=0}^{\\infty} \\gamma^k = \\frac{1}{1-\\gamma}$ 才會收斂。",
+    "id": 143
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 44,
+    "difficulty": "困難",
+    "question": "分析 Q-Learning（Algorithm 5）與 SARSA（Algorithm 4）在危險環境（Cliff Walking）中的差異行為：",
+    "options": [
+      {
+        "key": "A",
+        "text": "Q-Learning 學到最短路徑（冒險走懸崖邊），SARSA 學到較安全但較長的路徑"
+      },
+      {
+        "key": "B",
+        "text": "兩者學到完全相同的策略"
+      },
+      {
+        "key": "C",
+        "text": "SARSA 學到最短路徑，Q-Learning 學到較安全的路徑"
+      },
+      {
+        "key": "D",
+        "text": "兩者都無法在 Cliff Walking 問題中收斂"
+      }
+    ],
+    "answer": "A",
+    "explanation": "這是經典的 Cliff Walking 例子。Q-Learning 學習的是最優策略的 Q 值（使用 $\\max_{a'}$），不考慮當前 $\\epsilon$-greedy 策略的隨機性，因此會偏向懸崖邊的最短路徑。SARSA 會把 $\\epsilon$-greedy 的探索風險也考慮進去，所以通常學到更保守、較安全的路徑。",
+    "id": 144
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 45,
+    "difficulty": "困難",
+    "question": "在 DQN 的損失函數中，$U(D)$ 代表從 replay memory 均勻採樣。若改用 Prioritized Experience Replay，其核心思想是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "只保留最新的 N 個 transitions"
+      },
+      {
+        "key": "B",
+        "text": "根據 TD 誤差的大小決定採樣機率，TD 誤差越大的 transition 被採樣的機率越高"
+      },
+      {
+        "key": "C",
+        "text": "完全隨機地捨棄舊的 transitions"
+      },
+      {
+        "key": "D",
+        "text": "確保每個 transition 只被使用一次"
+      }
+    ],
+    "answer": "B",
+    "explanation": "均勻的 $U(D)$對所有 transitions 平等對待，但有些 transitions（TD 誤差大的）提供更多學習訊息。Prioritized Experience Replay 根據 TD 誤差$|r + \\gamma \\max_{a'} Q(s', a'; \\theta_{i-1}) - Q(s, a; \\theta_i)|$ 的大小來決定優先採樣順序：誤差越大，代表這個 transition 越「出乎意料」，從中可以學到更多，因此給予更高的採樣優先級。這是對 DQN 的重要改進，雖然教材未直接提及，但屬於 Double DQN 等進階主題的相關概念。",
+    "id": 145
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 46,
+    "difficulty": "困難",
+    "question": "考慮 MDP 的 Markov 性質：$p(s'|s, a) = Pr\\{S_{t+1} = s' | S_t = s, A_t = a\\}$。這個定義隱含了什麼重要假設？",
+    "options": [
+      {
+        "key": "A",
+        "text": "狀態空間必須是有限的"
+      },
+      {
+        "key": "B",
+        "text": "未來狀態的轉移機率只依賴當前狀態和動作，與歷史狀態無關（Markov Property）"
+      },
+      {
+        "key": "C",
+        "text": "動作空間必須是離散的"
+      },
+      {
+        "key": "D",
+        "text": "環境的轉移必須是確定性的（Deterministic）"
+      }
+    ],
+    "answer": "B",
+    "explanation": "MDP 的核心是 **Markov Property**：$Pr\\{S_{t+1} = s' \\mid S_t, A_t, S_{t-1}, A_{t-1}, \\ldots\\} = Pr\\{S_{t+1} = s' \\mid S_t, A_t\\}$。即給定當前狀態 $S_t$ 和動作 $A_t$，過去的歷史不提供任何額外資訊。若環境不滿足 Markov 性質，則需要用 POMDP 等延伸框架。",
+    "id": 146
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 47,
+    "difficulty": "困難",
+    "question": "在 n-step SARSA 中，若 $n=1$ 和 $n=\\infty$ 分別對應什麼方法？$n$ 的選擇如何影響 Bias-Variance Tradeoff？",
+    "options": [
+      {
+        "key": "A",
+        "text": "$n=1$ 對應 MC；$n=\\infty$ 對應 TD；較大的 $n$ 降低 Bias 但增加 Variance"
+      },
+      {
+        "key": "B",
+        "text": "$n=1$ 對應 TD(SARSA)；$n=\\infty$ 對應 MC；較大的 $n$ 降低 Bias 但增加 Variance"
+      },
+      {
+        "key": "C",
+        "text": "$n=1$ 對應 TD(SARSA)；$n=\\infty$ 對應 MC；較大的 $n$ 降低 Variance 但增加 Bias"
+      },
+      {
+        "key": "D",
+        "text": "$n$ 的大小不影響 Bias-Variance Tradeoff"
+      }
+    ],
+    "answer": "B",
+    "explanation": "n-step Q-return 為\n$$\nq_t^{(n)} = R_{t+1} + \\gamma R_{t+2} + \\cdots + \\gamma^{n-1} R_{t+n} + \\gamma^n Q(S_{t+n})\n$$\n- $n=1$ 時，退化為 1-step TD，也就是 SARSA。\n- $n=\\infty$ 時，退化為 Monte Carlo。\n較大的 $n$ 通常會降低 Bias，但提高 Variance。",
+    "id": 147
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 48,
+    "difficulty": "困難",
+    "question": "Double DQN 旨在解決標準 DQN 的什麼問題？",
+    "options": [
+      {
+        "key": "A",
+        "text": "解決 replay memory 容量不足的問題"
+      },
+      {
+        "key": "B",
+        "text": "解決 Q 值被高估（Overestimation）的問題，透過分離動作選擇和 Q 值估計"
+      },
+      {
+        "key": "C",
+        "text": "解決探索不足（Insufficient Exploration）的問題"
+      },
+      {
+        "key": "D",
+        "text": "解決連續動作空間無法處理的問題"
+      }
+    ],
+    "answer": "B",
+    "explanation": "標準 DQN 的 target 為 $r + \\gamma \\max_{a'} Q(s', a'; \\theta_{i-1})$，會用同一個估計同時做動作選擇與價值評估，因此容易高估。Double DQN 的改進是：先用當前網路選出 $a^* = \\arg\\max_a Q(s', a; \\theta)$，再用 target network 評估 $Q(s', a^*; \\theta')$，藉此降低 overestimation。",
+    "id": 148
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 49,
+    "difficulty": "困難",
+    "question": "考慮 Bellman Optimality Equation 的不動點性質（Fixed Point Property）。如果 $V^*$ 滿足：$V^*(s) = \\max_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V^*(s')]$，這個方程式為何保證唯一解存在？",
+    "options": [
+      {
+        "key": "A",
+        "text": "因為狀態空間有限，可以枚舉所有可能的 V"
+      },
+      {
+        "key": "B",
+        "text": "Bellman Optimality Operator 是壓縮映射（Contraction Mapping），在 $\\gamma < 1$ 時保證唯一不動點"
+      },
+      {
+        "key": "C",
+        "text": "最優策略是唯一的，因此對應唯一的 $V^*$"
+      },
+      {
+        "key": "D",
+        "text": "因為獎勵函數有界，所以 V 函數必然收斂"
+      }
+    ],
+    "answer": "B",
+    "explanation": "定義 Bellman optimality operator 為 $(TV)(s) = \\max_a \\sum_{s',r} p(s',r|s,a)[r + \\gamma V(s')]$。當 $\\gamma < 1$ 時，$T$ 在 $\\sup$-norm 下是 contraction mapping：$\\|TV - TU\\|_\\infty \\leq \\gamma \\|V-U\\|_\\infty$。因此依 Banach fixed-point theorem，$T$ 有唯一不動點，也就是 $V^*$。",
+    "id": 149
+  },
+  {
+    "source": "Claude",
+    "source_question_no": 50,
+    "difficulty": "困難",
+    "question": "綜合比較題：請分析 Dynamic Programming、Monte Carlo、Temporal Difference 三大方法在以下維度的差異：(A) 是否需要環境模型、(B) 是否需要完整 Episode、(C) 是否使用 Bootstrap。哪個選項正確描述了三者的差異？",
+    "options": [
+      {
+        "key": "A",
+        "text": "DP（需模型、不需完整 Episode、用 Bootstrap）；MC（不需模型、需完整 Episode、不用 Bootstrap）；TD（不需模型、不需完整 Episode、用 Bootstrap）"
+      },
+      {
+        "key": "B",
+        "text": "DP（需模型、需完整 Episode、用 Bootstrap）；MC（不需模型、需完整 Episode、不用 Bootstrap）；TD（不需模型、不需完整 Episode、用 Bootstrap）"
+      },
+      {
+        "key": "C",
+        "text": "DP（需模型、不需完整 Episode、用 Bootstrap）；MC（需模型、需完整 Episode、不用 Bootstrap）；TD（不需模型、不需完整 Episode、用 Bootstrap）"
+      },
+      {
+        "key": "D",
+        "text": "DP（需模型、不需完整 Episode、不用 Bootstrap）；MC（不需模型、需完整 Episode、用 Bootstrap）；TD（不需模型、不需完整 Episode、用 Bootstrap）"
+      }
+    ],
+    "answer": "A",
+    "explanation": "三大方法的完整對比：\n\n| 方法 | 需要環境模型 | 需要完整 Episode | 使用 Bootstrap |\n|---|---|---|---|\n| DP | 是 | 否 | 是 |\n| MC | 否 | 是 | 否 |\n| TD | 否 | 否 | 是 |\n\nBootstrap 指用目前的 value estimate 來更新自己，而不是等完整真實回報。",
+    "id": 150
+  }
+]
